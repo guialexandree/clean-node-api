@@ -1,6 +1,6 @@
 import { SignUpController } from './signup'
-import { EmailValidator } from '../protocols'
-import { MissingParamError, InvalidParamError, InternalServerError } from '../errors'
+import { EmailValidator } from './signup-protocols'
+import { MissingParamError, InvalidParamError, InternalServerError } from '../../errors'
 
 interface SutTypes {
 	sut: SignUpController,
@@ -90,6 +90,23 @@ describe('SignUp Controller', () => {
 
 		expect(httpResponse.statusCode).toBe(400)
 		expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
+	})
+
+	test('Should return status 400 if no password confirmation fails', () => {
+		const { sut } = makeSut()
+		const httpRequest = {
+			body: {
+				email: 'email@email.com',
+				name: 'any_name',
+				password: 'any_password',
+				passwordConfirmation: 'invalid_confirmation'
+			}
+		}
+
+		const httpResponse = sut.handle(httpRequest)
+
+		expect(httpResponse.statusCode).toBe(400)
+		expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
 	})
 
 	test('Should return status 400 if an invalid email is provided', () => {
