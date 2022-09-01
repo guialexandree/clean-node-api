@@ -1,3 +1,4 @@
+import { rejects } from 'assert'
 import bcrypt from 'bcrypt'
 import { BcryptAdapater } from './bcrypt-adapter'
 
@@ -30,7 +31,16 @@ describe('Bcrypt Adapter', () => {
 		expect(hash).toBe('any_hash')
 	})
 
-	test('Should throws returns a throws', () => {
+	test('Should throws if bcrypt throws', () => {
+		const sut = makeSut()
 
+		const hashSpy = jest.spyOn(bcrypt, 'hash') as unknown as jest.Mock<
+			ReturnType<(key: string) => Promise<string>>,
+			Parameters<(key: string) => Promise<string>>
+		>
+		hashSpy.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+		const promise = sut.encrypt('any_value')
+
+		expect(promise).rejects.toThrow()
 	})
 })
