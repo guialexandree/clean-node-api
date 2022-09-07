@@ -6,10 +6,10 @@
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace",
-    "test:dev": "jest --passWithNoTests --watch -c jest-unit-config.js",
+    "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
-    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:integration": "npm test -- -c jest-integration-config.js",
     "test:related": "npm test -- --findRelatedTests src",
     "test:ci": "npm test -- --coverage"
   },
