@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Admin to fazendo",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceRoot}/src"
+        },
+        {
+            "name": "API to fazendo",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:3002/api/usuarios",
+            "webRoot": "${workspaceRoot}/src"
+        }
+    ]
+}
