@@ -5,18 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace",
-    "test:dev": "jest --passWithNoTests --watch",
+    "test:dev": "jest --passWithNoTests --watch -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
-    "test:related": "npm test -- --findRelatedTests",
+    "test:related": "npm test -- --findRelatedTests src",
     "test:ci": "npm test -- --coverage"
   },
-  "author": "",
+  "author": "Guilherme Alexandre Rocha Pereira",
   "license": "ISC",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^3.0.2",
     "@types/bcrypt": "^5.0.0",
     "@types/jest": "^28.1.8",
+    "@types/mongodb": "^3.6.20",
     "@types/node": "^18.7.13",
     "@types/validator": "^13.7.6",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
@@ -35,6 +37,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "mongodb": "^4.9.1",
     "validator": "^13.7.0"
   }
 }
