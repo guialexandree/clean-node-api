@@ -6,9 +6,9 @@ export class SignUpController implements Controller {
 	private readonly emailValidator: EmailValidator
 	private readonly addAccount: AddAccount
 
-	constructor (emailValidator: EmailValidator, addAccountStub: AddAccount) {
+	constructor (emailValidator: EmailValidator, addAccount: AddAccount) {
 		this.emailValidator = emailValidator
-		this.addAccount = addAccountStub
+		this.addAccount = addAccount
 	}
 
   async handle (httpRequest: HttpRequest) : Promise<HttpResponse> {
