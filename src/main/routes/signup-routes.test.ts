@@ -1,8 +1,9 @@
 import request from 'supertest'
-import app from '../config/app'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helpers'
 
 describe('SignUp Routes', () => {
+	const app = require('../config/app').default
+
 	beforeAll(async () => {
 		await MongoHelper.connect(global.__MONGO_URI__)
 	})
@@ -23,7 +24,7 @@ describe('SignUp Routes', () => {
 				name: 'Guilherme Alexandre',
 				email: 'guilherme_alexandre@hotmail.com',
 				password: 'any_password',
-				confirmPassword: 'any_password'
+				passwordConfirmation: 'any_password'
 			})
 			.expect(200)
 	})
