@@ -19,14 +19,16 @@ describe('Account Mongo Repository', () => {
 		return new AccountMongoRepository()
 	}
 
+	const makeFakeAccount = () => ({
+		name: 'any_name',
+		email: 'any_email',
+		password: 'any_password'
+	})
+
 	test('Should return an account on success', async () => {
 		const sut = makeSut()
 
-		const account = await sut.add({
-			name: 'any_name',
-			email: 'any_email',
-			password: 'any_password'
-		})
+		const account = await sut.add(makeFakeAccount())
 
 		expect(account).toBeTruthy()
 		expect(account.id).toBeTruthy()
