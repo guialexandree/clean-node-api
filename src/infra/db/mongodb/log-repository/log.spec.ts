@@ -1,4 +1,3 @@
-import { LogErrorRepository } from '../../../../data/protocols/log-error-repository'
 import { MongoHelper } from '../helpers/mongo-helpers'
 import { LogMongoRepository } from './log'
 
