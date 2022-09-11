@@ -1,4 +1,4 @@
-import { SignInController } from './sign'
+import { SignInController } from './signin'
 import { MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
@@ -34,6 +34,7 @@ describe('SignIn Controller', () => {
 		const fakeRequest = {
 			body: { password: 'any_password' }
 		}
+
 		const result = await sut.handle(fakeRequest)
 
 		expect(result).toEqual(badRequest(new MissingParamError('email')))
@@ -44,6 +45,7 @@ describe('SignIn Controller', () => {
 		const fakeRequest = {
 			body: { email: 'email@email.com' }
 		}
+
 		const result = await sut.handle(fakeRequest)
 
 		expect(result).toEqual(badRequest(new MissingParamError('password')))
@@ -58,6 +60,7 @@ describe('SignIn Controller', () => {
 			}
 		}
 		const isValidSpy = jest.spyOn(emailValidator, 'isValid')
+
 		await sut.handle(fakeRequest)
 
 		expect(isValidSpy).toHaveBeenCalledWith('email@email.com')
