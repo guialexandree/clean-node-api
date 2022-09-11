@@ -15,24 +15,22 @@ export class SignInController implements Controller {
 
 	async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
 		try {
-			const { email } = httpRequest.body
-			if (!email) {
-				return new Promise(resolve => resolve(badRequest(new MissingParamError('email'))))
+			const requiredFields = ['email', 'password']
+			for (const field of requiredFields) {
+				if (!httpRequest.body[field]) {
+					return badRequest(new MissingParamError(field))
+				}
 			}
 
-			const { password } = httpRequest.body
-			if (!password) {
-				return new Promise(resolve => resolve(badRequest(new MissingParamError('password'))))
-			}
-
+			const { email, password } = httpRequest.body
 			const isValid = this.emailValidator.isValid(email)
 			if (!isValid) {
-				return new Promise(resolve => resolve(badRequest(new InvalidParamError('email'))))
+				return badRequest(new InvalidParamError('email'))
 			}
 
 			const token = await this.authentication.auth(email, password)
 
-			return new Promise(resolve => resolve(ok({ token })))
+			return ok({ token })
 		} catch (error) {
 			return serverError(error as Error)
 		}
