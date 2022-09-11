@@ -27,7 +27,6 @@ export class SignInController implements Controller {
 			if (!isValid) {
 				return badRequest(new InvalidParamError('email'))
 			}
-
 			const token = await this.authentication.auth(email, password)
 
 			return ok({ token })
