@@ -8,15 +8,23 @@ describe('SignIn Controller', () => {
 		return new SignInController()
 	}
 
-	const makeRequest = () : HttpRequest => ({
-		body: {}
-	})
-
 	test('Should return 400 if no email is provied', async () => {
 		const sut = makeSut()
-
-		const result = await sut.handle(makeRequest())
+		const fakeRequest = {
+			body: { password: 'any_password' }
+		}
+		const result = await sut.handle(fakeRequest)
 
 		expect(result).toEqual(badRequest(new MissingParamError('email')))
+	})
+
+	test('Should return 400 if no password is provied', async () => {
+		const sut = makeSut()
+		const fakeRequest = {
+			body: { email: 'any_email' }
+		}
+		const result = await sut.handle(fakeRequest)
+
+		expect(result).toEqual(badRequest(new MissingParamError('password')))
 	})
 })
