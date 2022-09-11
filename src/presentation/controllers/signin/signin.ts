@@ -2,12 +2,15 @@ import { Controller, HttpRequest, HttpResponse } from '../../protocols'
 import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, ok, serverError } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
+import { Authentication } from '../../../domain/usecases/authentication'
 
 export class SignInController implements Controller {
 	private readonly emailValidator: EmailValidator
+	private readonly authentication: Authentication
 
-	constructor (emailValidator: EmailValidator) {
+	constructor (emailValidator: EmailValidator, authentication: Authentication) {
 		this.emailValidator = emailValidator
+		this.authentication = authentication
 	}
 
 	async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -27,7 +30,9 @@ export class SignInController implements Controller {
 				return new Promise(resolve => resolve(badRequest(new InvalidParamError('email'))))
 			}
 
-			return new Promise(resolve => resolve(ok({ ok: 'ok' })))
+			const token = await this.authentication.auth(email, password)
+
+			return new Promise(resolve => resolve(ok({ token })))
 		} catch (error) {
 			return serverError(error as Error)
 		}
