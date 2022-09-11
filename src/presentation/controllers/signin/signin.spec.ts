@@ -1,4 +1,4 @@
-import { SignInController } from './sign'
+import { SignInController } from './signin'
 import { MissingParamError } from '../../errors'
 import { badRequest } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
