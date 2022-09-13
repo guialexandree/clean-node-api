@@ -1,6 +1,6 @@
 import { SignInController } from './signin'
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 import { Authentication } from '../../../domain/usecases/authentication'
 import { UnauthorizedError } from '../../errors/unauthorized-error'
@@ -123,5 +123,24 @@ describe('SignIn Controller', () => {
 		const accessToken = await sut.handle(makeFakeRequest())
 
 		expect(accessToken).toEqual(unauthorized())
+	})
+
+	test('Should return 500 if Authentication throws', async () => {
+		const { sut, authentication } = makeSut()
+		jest
+			.spyOn(authentication, 'auth')
+			.mockImplementationOnce(() => { throw new Error() })
+
+		const result = await sut.handle(makeFakeRequest())
+
+		expect(result).toEqual(serverError(new Error()))
+	})
+
+	test('Should return 200 and an accessToken valid if Authentication on success', async () => {
+		const { sut } = makeSut()
+
+		const result = await sut.handle(makeFakeRequest())
+
+		expect(result).toEqual(ok({ accessToken: 'any_token' }))
 	})
 })
