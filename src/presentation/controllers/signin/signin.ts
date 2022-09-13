@@ -3,7 +3,6 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 import { Authentication } from '../../../domain/usecases/authentication'
-import { UnauthorizedError } from '../../errors/unauthorized-error'
 
 export class SignInController implements Controller {
 	private readonly emailValidator: EmailValidator
@@ -33,8 +32,8 @@ export class SignInController implements Controller {
 			if (!accessToken) {
 				return unauthorized()
 			}
-			return ok({ ok: 'ok' })
-			// return ok({ accessToken })
+
+			return ok({ accessToken })
 		} catch (error) {
 			return serverError(error as Error)
 		}
