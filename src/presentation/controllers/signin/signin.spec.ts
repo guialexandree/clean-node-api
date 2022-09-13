@@ -3,7 +3,6 @@ import { InvalidParamError, MissingParamError } from '../../errors'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http-helper'
 import { EmailValidator } from '../../../presentation/protocols/email-validator'
 import { Authentication } from '../../../domain/usecases/authentication'
-import { UnauthorizedError } from '../../errors/unauthorized-error'
 
 interface SutTypes {
 	sut: SignInController
