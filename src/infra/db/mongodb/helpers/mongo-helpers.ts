@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient } from 'mongodb'
+import { Collection, Db, MongoClient, WithId } from 'mongodb'
 import { AddAccountModel } from '../../../../domain/usecases/add-account'
 
 export const MongoHelper = {
@@ -23,9 +23,14 @@ export const MongoHelper = {
 		return this.client.db().collection(name)
 	},
 
-	map (accountData: AddAccountModel, collectionResult: any) : any {
+	mapCreate (accountData: AddAccountModel, collectionResult: any) : any {
 		const { insertedId } = collectionResult
 		const { _id, ...dataResult } = accountData
 		return Object.assign({}, { id: insertedId.toString() }, dataResult)
+	},
+
+	map (account: any) : any {
+		const { _id, ...accountValues } = account
+		return Object.assign({}, { id: _id.toString() }, accountValues)
 	}
 }
