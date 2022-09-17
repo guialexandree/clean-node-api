@@ -2,7 +2,7 @@ import { CompareFieldsValidation } from './compare-fields-validation'
 import { InvalidParamError } from '../../errors'
 
 const makeSut = () => {
-	return new CompareFieldsValidation('password', 'passwordConfirmation')
+	return new CompareFieldsValidation('field', 'fieldCompare')
 }
 
 describe('RequiredField Validation', () => {
@@ -10,12 +10,21 @@ describe('RequiredField Validation', () => {
 		const sut = makeSut()
 
 		const erro = sut.validate({
-			name: 'Guilherme',
-			email: 'any_email@email.com',
-			password: 'any_password',
-			passwordConfirmation: 'other_password'
+			field: 'any_password',
+			fieldCompare: 'other_password'
 		})
 
-		expect(erro).toEqual(new InvalidParamError('passwordConfirmation'))
+		expect(erro).toEqual(new InvalidParamError('fieldCompare'))
+	})
+
+	test('Should return null if validation on success', () => {
+		const sut = makeSut()
+
+		const erro = sut.validate({
+			field: 'any_password',
+			fieldCompare: 'any_password'
+		})
+
+		expect(erro).toBeNull()
 	})
 })
