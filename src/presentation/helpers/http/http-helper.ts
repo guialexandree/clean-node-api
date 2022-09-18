@@ -1,6 +1,6 @@
-import { InternalServerError } from '../errors'
-import { UnauthorizedError } from '../errors/unauthorized-error'
-import { HttpResponse } from '../protocols/http'
+import { InternalServerError } from '../../errors'
+import { UnauthorizedError } from '../../errors/unauthorized-error'
+import { HttpResponse } from '../../protocols/http'
 
 export const badRequest = (error: Error) : HttpResponse => ({
 	statusCode: 400,
@@ -9,7 +9,7 @@ export const badRequest = (error: Error) : HttpResponse => ({
 
 export const serverError = (error: Error) : HttpResponse => ({
 	statusCode: 500,
-	body: new InternalServerError(error?.stack)
+	body: new InternalServerError(error.stack)
 })
 
 export const unauthorized = () : HttpResponse => ({
