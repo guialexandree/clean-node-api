@@ -1,4 +1,5 @@
-import { Validation, EmailValidator } from '../../controllers/signup/signup-protocols'
+import { Validation } from './validation'
+import { EmailValidator } from '../../protocols/email-validator'
 import { InvalidParamError } from '../../errors'
 import { EmailValidation } from './email-validation'
 
@@ -12,7 +13,7 @@ const makeValidation = () : Validation => {
 	return new ValidationStub()
 }
 
-const makeEmailValidator = () : EmailValidator => {
+export const makeEmailValidator = () : EmailValidator => {
 	class EmailValidatorStub implements EmailValidator {
 		isValid (email: string) : boolean {
 			return true

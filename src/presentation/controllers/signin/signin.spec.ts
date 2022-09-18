@@ -88,4 +88,27 @@ describe('SignIn Controller', () => {
 
 		expect(result).toEqual(ok({ accessToken: 'any_token' }))
 	})
+
+	test('Should call Validation with correct value', async () => {
+		const { sut, validationStub } = makeSut()
+		const fakeRequest = makeFakeRequest()
+
+		const validatoSpy = jest.spyOn(validationStub, 'validate')
+		await sut.handle(fakeRequest)
+
+		expect(validatoSpy).toHaveBeenCalledWith(fakeRequest.body)
+	})
+
+	test('Should return status 400 if Validation return error', async () => {
+		const { sut, validationStub } = makeSut()
+		const fakeRequest = makeFakeRequest()
+
+		jest
+			.spyOn(validationStub, 'validate')
+			.mockReturnValueOnce(new MissingParamError('any_param'))
+
+		const response = await sut.handle(fakeRequest)
+
+		expect(response).toEqual(badRequest(new MissingParamError('any_param')))
+	})
 })
