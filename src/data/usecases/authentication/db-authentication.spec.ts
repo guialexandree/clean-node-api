@@ -19,6 +19,11 @@ const makeLoadAccountByEmailRepository = () : LoadAccountByEmailRepository => {
 	return new LoadAccountByEmailRepositoryStub()
 }
 
+const makeFakeAuthentication = () => ({
+	email: 'guilherme@email.com',
+	password: 'any_passord'
+})
+
 interface SutTypes {
 	sut: Authentication,
 	loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
@@ -39,11 +44,44 @@ describe('Db Authentication', () => {
 		const { sut, loadAccountByEmailRepositoryStub } = makeSut()
 		const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
 
-		await sut.auth({
+		await sut.auth(makeFakeAuthentication())
+
+		expect(loadSpy).toHaveBeenCalledWith('guilherme@email.com')
+	})
+
+	test('Should throws if LoadAccountByEmailRepository throws', async () => {
+		const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+		jest
+			.spyOn(loadAccountByEmailRepositoryStub, 'load')
+			.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+		const promise = sut.auth(makeFakeAuthentication())
+
+		expect(promise).rejects.toThrow()
+	})
+
+	test('Should return null if LoadAccountByEmailRepository returns null', async () => {
+		const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+		jest
+			.spyOn(loadAccountByEmailRepositoryStub, 'load')
+			.mockReturnValueOnce(new Promise((resolve) => resolve(null as unknown as AccountModel)))
+
+		const account = await sut.auth({
 			email: 'guilherme@email.com',
 			password: 'any_passord'
 		})
 
-		expect(loadSpy).toHaveBeenCalledWith('guilherme@email.com')
+		expect(account).toBeNull()
+	})
+
+	test('Should return an account if LoadAccountByEmailRepository return account', async () => {
+		const { sut } = makeSut()
+
+		const account = await sut.auth({
+			email: 'guilherme@email.com',
+			password: 'any_passord'
+		})
+
+		// expect(account).toEqual()
 	})
 })
