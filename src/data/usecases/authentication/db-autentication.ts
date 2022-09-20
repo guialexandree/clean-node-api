@@ -1,29 +1,29 @@
 import { Authentication, AuthenticationModel } from '../../../domain/usecases/authentication'
 import { HashComparer } from '../../protocols/criptography/hash-comparer'
-import { TokenGenerator } from '../../protocols/criptography/token-generator'
+import { Encrypter } from '../../protocols/criptography/token-generator'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-accound-by-email-repository'
 
 export class DbAuthentication implements Authentication {
-	private readonly loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
-	private readonly hashComparerStub: HashComparer
-	private readonly tokenGeneratorStub: TokenGenerator
+	private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository
+	private readonly hashComparer: HashComparer
+	private readonly tokenGenerator: Encrypter
 
 	constructor (
-		loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository,
-		hashComparerStub: HashComparer,
-		tokenGeneratorStub: TokenGenerator
+		loadAccountByEmailRepository: LoadAccountByEmailRepository,
+		hashComparer: HashComparer,
+		tokenGenerator: Encrypter
 	) {
-		this.loadAccountByEmailRepositoryStub = loadAccountByEmailRepositoryStub
-		this.hashComparerStub = hashComparerStub
-		this.tokenGeneratorStub = tokenGeneratorStub
+		this.loadAccountByEmailRepository = loadAccountByEmailRepository
+		this.hashComparer = hashComparer
+		this.tokenGenerator = tokenGenerator
 	}
 
 	async auth (authentication: AuthenticationModel) : Promise<string> {
-		const account = await this.loadAccountByEmailRepositoryStub.load(authentication.email)
+		const account = await this.loadAccountByEmailRepository.load(authentication.email)
 		if (account) {
-			const isValid = await this.hashComparerStub.compare(authentication.password, account.password)
+			const isValid = await this.hashComparer.compare(authentication.password, account.password)
 			if (isValid) {
-				const accessToken = await this.tokenGeneratorStub.generate(account.id)
+				const accessToken = await this.tokenGenerator.encrypt(account.id)
 				return accessToken
 			}
 		}

@@ -4,7 +4,7 @@ import { AccountModel } from '../add-account/db-add-account-protocols'
 import { LoadAccountByEmailRepository } from '../../protocols/db/load-accound-by-email-repository'
 import { DbAuthentication } from './db-autentication'
 import { HashComparer } from '../../protocols/criptography/hash-comparer'
-import { TokenGenerator } from '../../protocols/criptography/token-generator'
+import { Encrypter } from '../../protocols/criptography/token-generator'
 
 const makeLoadAccountByEmailRepository = () : LoadAccountByEmailRepository => {
 	class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
@@ -25,9 +25,9 @@ const makeHashComparer = () : HashComparer => {
 	return new HashComparerStub()
 }
 
-const makeTokenGenerator = () : TokenGenerator => {
-	class TokenGeneratorStub implements TokenGenerator {
-		async generate (id: string) : Promise<string> {
+const makeTokenGenerator = () : Encrypter => {
+	class TokenGeneratorStub implements Encrypter {
+		async encrypt (id: string) : Promise<string> {
 			return new Promise(resolve => resolve('any_token'))
 		}
 	}
@@ -50,7 +50,7 @@ interface SutTypes {
 	sut: Authentication,
 	loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository,
 	hashComparerStub: HashComparer,
-	tokenGeneratorStub: TokenGenerator
+	tokenGeneratorStub: Encrypter
 }
 
 const makeSut = () : SutTypes => {
@@ -135,7 +135,7 @@ describe('Db Authentication', () => {
 
 	test('Should call TokenGenerator with correct id', async () => {
 		const { sut, tokenGeneratorStub } = makeSut()
-		const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+		const generateSpy = jest.spyOn(tokenGeneratorStub, 'encrypt')
 
 		await sut.auth(makeFakeAuthentication())
 
@@ -145,7 +145,7 @@ describe('Db Authentication', () => {
 	test('Should throws if TokenGenerator throws', async () => {
 		const { sut, tokenGeneratorStub } = makeSut()
 		jest
-			.spyOn(tokenGeneratorStub, 'generate')
+			.spyOn(tokenGeneratorStub, 'encrypt')
 			.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
 
 		const promise = sut.auth(makeFakeAuthentication())
