@@ -1,5 +1,4 @@
 import { Collection, Db, MongoClient } from 'mongodb'
-import { AddAccountModel } from '../../../../domain/usecases/add-account'
 
 export const MongoHelper = {
 	client: null as unknown as MongoClient,
