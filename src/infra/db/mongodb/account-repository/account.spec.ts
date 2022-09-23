@@ -84,4 +84,16 @@ describe('Account Mongo Repository', () => {
 		expect(account).toBeTruthy()
 		expect(account?.accessToken).toBe('any_token')
 	})
+
+	test('Should throws if updateAccessToken throws', async () => {
+		const sut = makeSut()
+		const { insertedId } = await accountCollection.insertOne(makeFakeAccount())
+		jest
+			.spyOn(sut, 'updateAccessToken')
+			.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+		const promise = sut.updateAccessToken(insertedId.toString(), 'any_token')
+
+		expect(promise).rejects.toThrow()
+	})
 })
