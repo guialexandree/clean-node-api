@@ -20,6 +20,7 @@
     "quotes": [2, "single", { "avoidEscape": true }],
     "@typescript-eslint/strict-boolean-expressions": "off",
 		"no-tabs": "off",
-		"indent": "off"
+		"indent": "off",
+		"no-useless-constructor": "off"
   }
 }
