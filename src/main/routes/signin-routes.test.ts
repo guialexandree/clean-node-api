@@ -51,5 +51,21 @@ describe('SignUp Routes', () => {
 				})
 				.expect(200)
 		})
+
+		test('Should return 401 if signin fails', async () => {
+			const password = await hash('123', 12)
+			accountCollection.insertOne({
+				name: 'Guilherme Alexandre',
+				email: 'guilherme_alexandre@hotmail.com',
+				password
+			})
+			await request(app)
+				.post('/api/signin')
+				.send({
+					email: 'guilherme_alexandre@hotmail.com',
+					password: 'password_incorrect'
+				})
+				.expect(401)
+		})
 	})
 })
