@@ -6,7 +6,7 @@ export class SignInController implements Controller {
 	constructor (
 		private readonly authentication: Authentication,
 		private readonly validation: Validation
-		) { }
+	) { }
 
 	async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
 		try {
