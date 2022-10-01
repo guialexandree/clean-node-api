@@ -5,7 +5,7 @@ import { hash } from 'bcrypt'
 
 let accountCollection: Collection
 
-describe('SignUp Routes', () => {
+describe('Login Routes', () => {
 	const app = require('../config/app').default
 
 	beforeAll(async () => {

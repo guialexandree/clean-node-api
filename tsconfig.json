@@ -1,13 +1,14 @@
 {
 	"compilerOptions": {
-		"target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-		"allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. */
-		"outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
+		"target": "es2019",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+		// "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. */
+		"outDir": "dist",                                   /* Specify an output folder for all emitted files. */
     "module": "commonjs",                                /* Specify what module code is generated. */
 		"esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
-		"forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-		"strict": true,                                      /* Enable all strict type-checking options. */
-    //"types": ["@types/jest"],
+		// "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+		// "strict": true,                                      /* Enable all strict type-checking options. */
+    // "rootDirs": ["src"],
+		//"types": ["@types/jest"],
 		//"typeRoots": ["./src/types"],                                  /* Specify multiple folders that act like `./node_modules/@types`. */
 		/* Visit https://aka.ms/tsconfig.json to read more about this file */
 
@@ -97,5 +98,10 @@
     /* Completeness */
     "skipDefaultLibCheck": false,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": false                                 /* Skip type checking all .d.ts files. */
-  }
+  },
+	"include": ["src"],
+	"exclude": [
+		"**/*.spec.ts",
+		"**/*.test.ts"
+	]
 }
