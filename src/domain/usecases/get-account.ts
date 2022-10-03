@@ -1,6 +1,6 @@
 import { AccountModel } from '../models/account'
 
-export interface GetAccountModel {
+export type GetAccountModel = {
 	email: string,
 }
 

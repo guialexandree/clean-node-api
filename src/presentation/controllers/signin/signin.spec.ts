@@ -4,12 +4,6 @@ import { badRequest, ok, serverError, unauthorized } from '@/presentation/helper
 import { Validation } from './signin-controller-protocols'
 import { SignInController } from './signin-controller'
 
-interface SutTypes {
-	sut: SignInController
-	validationStub: Validation
-	authentication: Authentication
-}
-
 const makeAuthentication = () : Authentication => {
 	class AuthenticationStub implements Authentication {
 		async auth (authentication: AuthenticationModel) : Promise<string> {
@@ -36,6 +30,12 @@ const makeFakeRequest = () => ({
 		password: 'any_password'
 	}
 })
+
+type SutTypes = {
+	sut: SignInController
+	validationStub: Validation
+	authentication: Authentication
+}
 
 const makeSut = () : SutTypes => {
 	const authentication = makeAuthentication()

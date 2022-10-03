@@ -41,7 +41,7 @@ const makeFakeAccount = () : AccountModel => ({
 	password: 'any_password'
 })
 
-interface SutTypes {
+type SutTypes = {
 	sut: LogControllerDecorator
 	controller: Controller
 	logErrorRepository: LogErrorRepository

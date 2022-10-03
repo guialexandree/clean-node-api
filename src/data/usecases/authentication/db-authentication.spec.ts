@@ -58,7 +58,7 @@ const makeFakeAccount = () => ({
 	password: 'hashed_password'
 })
 
-interface SutTypes {
+type SutTypes = {
 	sut: Authentication,
 	loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository,
 	hashComparerStub: HashComparer,
