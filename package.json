@@ -7,7 +7,7 @@
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "dev": "sucrase-node src/main/server.ts",
-    "debug": "node --inspect dist/main/server.js",
+    "debug": "nodemon --watch ./dist --inspect --nolazy dist/main/server.js",
     "test": "jest --passWithNoTests --noStackTrace",
     "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests",
@@ -52,12 +52,13 @@
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
     "mongodb": "^4.9.1",
+    "nodemon": "^2.0.20",
     "validator": "^13.7.0"
   },
   "engines": {
     "node": "14.17.x"
   },
-	"_moduleAliases": {
-		"@": "dist"
-	}
+  "_moduleAliases": {
+    "@": "dist"
+  }
 }
