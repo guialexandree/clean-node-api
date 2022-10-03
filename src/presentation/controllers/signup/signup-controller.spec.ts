@@ -1,5 +1,5 @@
 import { SignUpController } from './signup-controller'
-import { AddAccount, AddAccountModel, AccountModel, Validation } from './signup-controller-protocols'
+import { AddAccount, AddAccountModel, AccountModel, Validation, Authentication, AuthenticationModel } from './signup-controller-protocols'
 import { MissingParamError, InternalServerError } from '@/presentation/errors'
 import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
 
@@ -11,6 +11,16 @@ const makeValidation = () : Validation => {
 	}
 
 	return new ValidationStub()
+}
+
+const makeAuthentication = () : Authentication => {
+	class AuthenticationStub implements Authentication {
+		async auth (authentication: AuthenticationModel) : Promise<string> {
+			return new Promise(resolve => resolve('any_token'))
+		}
+	}
+
+	return new AuthenticationStub()
 }
 
 const makeAddAccountValidator = () : AddAccount => {
@@ -42,18 +52,21 @@ const makeFakeAccount = () : AccountModel => ({
 type SutTypes = {
 	sut: SignUpController,
 	addAccountStub: AddAccount,
-	validationStub: Validation
+	validationStub: Validation,
+	authentication: Authentication
 }
 
 const makeSut = () : SutTypes => {
 	const addAccountStub = makeAddAccountValidator()
 	const validationStub = makeValidation()
-	const sut = new SignUpController(addAccountStub, validationStub)
+	const authentication = makeAuthentication()
+	const sut = new SignUpController(addAccountStub, validationStub, authentication)
 
 	return {
 		sut,
 		addAccountStub,
-		validationStub
+		validationStub,
+		authentication
 	}
 }
 
@@ -83,6 +96,18 @@ describe('SignUp Controller', () => {
 
 		expect(httpResponse)
 			.toEqual(serverError(new InternalServerError(httpResponse.body)))
+	})
+
+	test('Should call Authentication with correct values', async () => {
+		const { sut, authentication } = makeSut()
+		const authSpy = jest.spyOn(authentication, 'auth')
+
+		await sut.handle(makeFakeRequest())
+
+		expect(authSpy).toHaveBeenCalledWith({
+			email: 'email@email.com',
+			password: 'any_password'
+		})
 	})
 
 	test('Should return status 200 if data is provided', async () => {
