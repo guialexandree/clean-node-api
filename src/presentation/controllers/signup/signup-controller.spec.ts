@@ -1,7 +1,8 @@
 import { SignUpController } from './signup-controller'
 import { AddAccount, AddAccountModel, AccountModel, Validation, Authentication, AuthenticationModel } from './signup-controller-protocols'
 import { MissingParamError, InternalServerError } from '@/presentation/errors'
-import { badRequest, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers/http/http-helper'
+import { EmailInUseError } from '@/presentation/errors/email-in-use-error'
 
 const makeValidation = () : Validation => {
 	class ValidationStub implements Validation {
@@ -85,6 +86,21 @@ describe('SignUp Controller', () => {
 		})
 	})
 
+	test('Should return status 403 if AddAccount returns null', async () => {
+		const { sut, addAccountStub } = makeSut()
+		const fakeRequest = makeFakeRequest()
+
+		jest
+			.spyOn(addAccountStub, 'add')
+			.mockImplementationOnce(() => {
+				return new Promise((resolve) => resolve(null as unknown as AccountModel))
+			})
+		const httpResponse = await sut.handle(fakeRequest)
+
+		expect(httpResponse)
+			.toEqual(forbidden(new EmailInUseError()))
+	})
+
 	test('Should return status 500 if AddAccount throws', async () => {
 		const { sut, addAccountStub } = makeSut()
 		const fakeRequest = makeFakeRequest()
@@ -110,14 +126,14 @@ describe('SignUp Controller', () => {
 		})
 	})
 
-	test('Should return status 200 if data is provided', async () => {
+	test('Should return status 200 an accessToken', async () => {
 		const { sut } = makeSut()
 		const fakeRequest = makeFakeRequest()
 
 		const httpResponse = await sut.handle(fakeRequest)
 
 		expect(httpResponse)
-			.toEqual(ok(makeFakeAccount()))
+			.toEqual(ok({ accessToken: 'any_token' }))
 	})
 
 	test('Should call Validation with correct value', async () => {
