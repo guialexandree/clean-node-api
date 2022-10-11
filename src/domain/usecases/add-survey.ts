@@ -1,11 +1,11 @@
-type SurveyModel = {
-	image: string,
+type SurveyAnswer = {
+	image?: string,
 	answer: string
 }
 
 export type AddSurveyModel = {
 	question: string,
-	answers: SurveyModel[]
+	answers: SurveyAnswer[]
 }
 
 export interface AddSurvey {
