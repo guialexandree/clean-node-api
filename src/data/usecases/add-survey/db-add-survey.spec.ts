@@ -1,4 +1,3 @@
-import { serverError } from '@/presentation/helpers/http/http-helper'
 import { DbAddSurvey, AddSurveyModel, AddSurveyRepository } from './db-add-survey-protocols'
 
 const makeFakeAddSurvey = () : AddSurveyModel => {

@@ -1,7 +1,7 @@
+import request from 'supertest'
+import { AddSurveyModel } from '@/domain/usecases/add-survey'
 import { Collection } from 'mongodb'
-import { MongoHelper } from '../helpers/mongo-helpers'
-import { AddSurveyModel } from './survey-mongo-protocols'
-import { SurveyMongoRepository } from './survey-mongo-repository'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helpers'
 
 let surveyCollection: Collection
 
@@ -19,11 +19,9 @@ const makeSurveyDate = () : AddSurveyModel => {
 	}
 }
 
-const makeSut = () : SurveyMongoRepository => {
-	return new SurveyMongoRepository()
-}
+describe('Login Routes', () => {
+	const app = require('../config/app').default
 
-describe('Account Mongo Repository', () => {
 	beforeAll(async () => {
 		await MongoHelper.connect(global.__MONGO_URI__)
 	})
@@ -37,11 +35,12 @@ describe('Account Mongo Repository', () => {
 		surveyCollection.deleteMany({})
 	})
 
-	test('Should add a survey on  success', async () => {
-		const sut = makeSut()
-		await sut.add(makeSurveyDate())
-
-		const survey = await surveyCollection.findOne({ question: 'any_question' })
-		expect(survey).toBeTruthy()
+	describe('POST /survey', () => {
+		test('Should return 204 on add survey', async () => {
+			await request(app)
+				.post('/api/survey')
+				.send(makeSurveyDate())
+				.expect(204)
+		})
 	})
 })
