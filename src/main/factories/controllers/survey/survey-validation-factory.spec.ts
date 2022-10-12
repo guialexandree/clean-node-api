@@ -5,14 +5,14 @@ import { makeSurveyValidation } from './survey-validation-factory'
 jest.mock('@/validation/validators/validation-composite')
 
 describe('SurveyValidation Factory', () => {
-	test('Should call ValidationComposite with all validations', () => {
-		makeSurveyValidation()
-		const validations: Validation[] = []
+  test('Should call ValidationComposite with all validations', () => {
+    makeSurveyValidation()
+    const validations: Validation[] = []
 
-		for (const field of ['answers', 'question']) {
-			validations.push(new RequiredFieldValidation(field))
-		}
+    for (const field of ['answers', 'question']) {
+      validations.push(new RequiredFieldValidation(field))
+    }
 
-		expect(ValidationComposite).toHaveBeenCalledWith(validations)
-	})
+    expect(ValidationComposite).toHaveBeenCalledWith(validations)
+  })
 })

@@ -1,10 +1,10 @@
-type AnswersModel = {
-	image: string,
-	answer: string
+interface AnswersModel {
+  image: string
+  answer: string
 }
 
-export type SurveyModel = {
-	id: string,
-	question: string,
-	answers: AnswersModel[]
+export interface SurveyModel {
+  id: string
+  question: string
+  answers: AnswersModel[]
 }

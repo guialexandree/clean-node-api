@@ -19,8 +19,11 @@
   "rules": {
     "quotes": [2, "single", { "avoidEscape": true }],
     "@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/no-misused-promises": "off",
+		"@typescript-eslint/indent": "off",
 		"no-tabs": "off",
 		"indent": "off",
-		"no-useless-constructor": "off"
+		"no-useless-constructor": "off",
+		"prefer-arrow-callback": "off"
   }
 }

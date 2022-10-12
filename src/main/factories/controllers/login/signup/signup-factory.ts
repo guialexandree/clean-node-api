@@ -5,12 +5,12 @@ import { makeAddAccount } from '../../../usecases/add-account/add-account-factor
 import { makeAuthentication } from '../../../usecases/authentication/authentication-factory'
 import { makeControllerDecorator } from '../../../decorator/log-controller-decoractor-factory'
 
-export const makeSignUpController = () : Controller => {
-	const controller = new SignUpController(
-		makeAddAccount(),
-		makeSignUpValidation(),
-		makeAuthentication()
-	)
+export const makeSignUpController = (): Controller => {
+  const controller = new SignUpController(
+    makeAddAccount(),
+    makeSignUpValidation(),
+    makeAuthentication()
+  )
 
-	return makeControllerDecorator(controller)
+  return makeControllerDecorator(controller)
 }
