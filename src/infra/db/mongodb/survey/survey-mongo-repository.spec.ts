@@ -5,7 +5,7 @@ import { SurveyMongoRepository } from './survey-mongo-repository'
 
 let surveyCollection: Collection
 
-const makeSurveyDate = () : AddSurveyModel => {
+const makeSurveyData = () : AddSurveyModel => {
 	return {
 		question: 'any_question',
 		answers: [
@@ -39,7 +39,7 @@ describe('Account Mongo Repository', () => {
 
 	test('Should add a survey on  success', async () => {
 		const sut = makeSut()
-		await sut.add(makeSurveyDate())
+		await sut.add(makeSurveyData())
 
 		const survey = await surveyCollection.findOne({ question: 'any_question' })
 		expect(survey).toBeTruthy()
