@@ -1,8 +1,7 @@
-import { LoadByAccountByToken } from '@/domain/usecases/load-account-by-token'
-import { AccountModel, HttpRequest } from '../controllers/login/signup/signup-controller-protocols'
-import { AccessDeniedError } from '../errors/access-denied-error'
+
+import { LoadByAccountByToken, AccountModel, HttpRequest, AuthMiddleware } from './auth-middleware-protocols'
 import { forbidden, ok, serverError } from '../helpers/http/http-helper'
-import { AuthMiddleware } from './auth-middlewarre'
+import { AccessDeniedError } from '../errors/access-denied-error'
 
 const makeLoadAccountByToken = () : LoadByAccountByToken => {
 	class LoadByAccountByTokenStub implements LoadByAccountByToken {
