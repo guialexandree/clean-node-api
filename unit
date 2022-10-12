@@ -1,4 +1,0 @@
-
-> clean-node-api@1.0.0 test
-> jest --passWithNoTests --noStackTrace
-
