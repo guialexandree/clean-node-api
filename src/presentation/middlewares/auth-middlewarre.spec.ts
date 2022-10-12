@@ -1,7 +1,7 @@
 import { LoadByAccountByToken } from '@/domain/usecases/load-account-by-token'
 import { AccountModel, HttpRequest } from '../controllers/login/signup/signup-controller-protocols'
 import { AccessDeniedError } from '../errors/access-denied-error'
-import { forbidden } from '../helpers/http/http-helper'
+import { forbidden, ok } from '../helpers/http/http-helper'
 import { AuthMiddleware } from './auth-middlewarre'
 
 const makeLoadAccountByToken = () : LoadByAccountByToken => {
@@ -71,5 +71,13 @@ describe('Auth Middleware', () => {
 		const response = await sut.handle({})
 
 		expect(response).toEqual(forbidden(new AccessDeniedError()))
+	})
+
+	test('Should return 200 if LoadAccountByToken returns an account', async () => {
+		const { sut } = makeSut()
+
+		const response = await sut.handle(makeFakeRequest())
+
+		expect(response).toEqual(ok({ accountId: 'any_id' }))
 	})
 })
