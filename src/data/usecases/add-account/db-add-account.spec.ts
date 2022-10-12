@@ -108,7 +108,9 @@ describe('DbAddAccount Usecase', () => {
 
   test('Should throw if AddAccountRepository throws', () => {
     const { sut, addAccountRepositoryStub: addAccountRepository } = makeSut()
-    jest.spyOn(addAccountRepository, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest
+			.spyOn(addAccountRepository, 'add')
+			.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
 
     const promise = sut.add(makeFakeAddAccount())
 
@@ -121,5 +123,16 @@ describe('DbAddAccount Usecase', () => {
     const account = await sut.add(makeFakeAddAccount())
 
     expect(account).toEqual(makeFakeAccount())
+  })
+
+	test('Should return null if email already in use', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+		jest
+			.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+			.mockReturnValueOnce(new Promise(resolve => resolve(makeFakeAccount())))
+
+			const account = await sut.add(makeFakeAddAccount())
+
+    expect(account).toEqual(null)
   })
 })

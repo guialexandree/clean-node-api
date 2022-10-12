@@ -28,6 +28,6 @@ export class DbAddAccount implements AddAccount {
       return account
     }
 
-    return null as unknown as AccountModel
+    return null
   }
 }
