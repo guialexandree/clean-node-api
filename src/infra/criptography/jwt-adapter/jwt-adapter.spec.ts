@@ -64,5 +64,17 @@ describe('JWT Adapter', () => {
 
 			expect(value).toEqual('any_value')
 		})
+
+		test('Should throws if verify thorws', async () => {
+			const sut = makeSut()
+
+			jest
+				.spyOn(jwt, 'verify')
+				.mockImplementationOnce(() => { throw new Error() })
+
+			const promise = sut.decrypt('any_token')
+
+			void expect(promise).rejects.toThrow()
+		})
 	})
 })
