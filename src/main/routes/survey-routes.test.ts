@@ -4,6 +4,7 @@ import env from '@/main/config/env'
 import request from 'supertest'
 import { Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
+import MockDate from 'mockdate'
 
 let surveyCollection: Collection
 let accountCollection: Collection
@@ -18,7 +19,8 @@ const makeSurveyDate = (): AddSurveyModel => {
       }, {
         answer: 'other_answer'
       }
-    ]
+    ],
+		date: new Date()
   }
 }
 
@@ -28,10 +30,12 @@ describe('Login Routes', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
+		MockDate.set(new Date())
   })
 
   afterAll(async () => {
     await MongoHelper.disconnect()
+		MockDate.reset()
   })
 
   beforeEach(async () => {
