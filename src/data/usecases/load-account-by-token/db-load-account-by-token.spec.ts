@@ -15,7 +15,7 @@ const makeDecrypter = (): Decrypter => {
 
 const makeLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
 	class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-		async loadByToken (accessToken: string): Promise<AccountModel> {
+		async loadByToken (accessToken: string, role?: string): Promise<AccountModel> {
 			return await new Promise(resolve => resolve(makeFakeAccount()))
 		}
 	}
@@ -74,7 +74,7 @@ describe('DbLoadAccountByToken UseCase', () => {
 
 		await sut.load('any_token', 'any_role')
 
-		expect(loadSpy).toHaveBeenCalledWith('any_token')
+		expect(loadSpy).toHaveBeenCalledWith('any_token', 'any_role')
 	})
 
 	test('Should return null if LoadAccountByTokenRepository returns null', async () => {

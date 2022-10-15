@@ -106,12 +106,43 @@ describe('Account Mongo Repository', () => {
 	})
 
 	describe('loadAccountByToken()', () => {
-		test('Should return account on loadAccountByToken success', async () => {
+		test('Should return account on loadAccountByToken with admin role', async () => {
 			const sut = makeSut()
 
 			await accountCollection.insertOne({
 				...makeFakeAccount(),
-				accessToken: 'any_token'
+				accessToken: 'any_token',
+				role: 'admin'
+			})
+			const account = await sut.loadByToken('any_token', 'admin')
+
+			expect(account).toBeTruthy()
+			expect(account.id).toBeTruthy()
+			expect(account.name).toBe('any_name')
+			expect(account.email).toBe('any_email')
+			expect(account.password).toBe('any_password')
+		})
+
+		test('Should return null on loadAccountByToken with invalid role', async () => {
+			const sut = makeSut()
+
+			await accountCollection.insertOne({
+				...makeFakeAccount(),
+				accessToken: 'any_token',
+				role: 'client'
+			})
+			const account = await sut.loadByToken('any_token', 'admin')
+
+			expect(account).toBeFalsy()
+		})
+
+		test('Should return an account on loadAccountByToken with if user is admin', async () => {
+			const sut = makeSut()
+
+			await accountCollection.insertOne({
+				...makeFakeAccount(),
+				accessToken: 'any_token',
+				role: 'admin'
 			})
 			const account = await sut.loadByToken('any_token')
 
@@ -121,13 +152,13 @@ describe('Account Mongo Repository', () => {
 			expect(account.email).toBe('any_email')
 			expect(account.password).toBe('any_password')
 		})
-	})
 
-	test('Should return null if loadByToken fails', async () => {
-		const sut = makeSut()
+		test('Should return null if loadByToken fails', async () => {
+			const sut = makeSut()
 
-		const account = await sut.loadByToken('any_token')
+			const account = await sut.loadByToken('any_token')
 
-		expect(account).toBeFalsy()
+			expect(account).toBeFalsy()
+		})
 	})
 })
