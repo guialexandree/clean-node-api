@@ -1,4 +1,5 @@
-import { Controller, HttpRequest } from '../add-survey/add-survey-controller-protocols'
+import { ok } from '@/presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '../add-survey/add-survey-controller-protocols'
 import { LoadSurveys } from './load-surveys-controller-protocols'
 
 export class LoadSurveysController implements Controller {
@@ -6,8 +7,8 @@ export class LoadSurveysController implements Controller {
 		private readonly loadSurveys: LoadSurveys
 	) {}
 
-	async handle (httpRequest: HttpRequest): Promise<any> {
-		await this.loadSurveys.load()
-		return null
+	async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+		const surveys = await this.loadSurveys.load()
+		return ok(surveys)
 	}
 }
