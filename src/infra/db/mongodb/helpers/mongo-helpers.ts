@@ -24,6 +24,6 @@ export const MongoHelper = {
 
   map (result: any): any {
     const { _id, ...dataResult } = result
-    return Object.assign({}, { id: _id.toString() }, dataResult)
+    return Object.assign({}, { id: _id }, dataResult)
   }
 }
