@@ -1,7 +1,8 @@
 import { LoadSurveys, SurveyModel } from './load-surveys-controller-protocols'
 import { LoadSurveysController } from './load-surveys.controller'
-import { ok } from '@/presentation/helpers/http/http-helper'
+import { ok, serverError } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
+import { InternalServerError } from '@/presentation/errors'
 
 const makeLoadSurveys = (): LoadSurveys => {
 	class LoadSurveysStub implements LoadSurveys {
@@ -81,4 +82,16 @@ describe('LoadSurveys Controller', () => {
 
 		expect(httpReponse).toEqual(ok(makeFakeSurveys()))
 	})
+
+	test('Should return status 500 if LoadSurveys throws', async () => {
+    const { sut, loadSurveysStub } = makeSut()
+    jest.spyOn(loadSurveysStub, 'load').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => reject(new Error()))
+    })
+
+    const httpResponse = await sut.handle({})
+
+    expect(httpResponse)
+      .toEqual(serverError(new InternalServerError(httpResponse.body)))
+  })
 })
