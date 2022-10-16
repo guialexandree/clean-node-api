@@ -26,26 +26,62 @@ const makeSut = (): SurveyMongoRepository => {
 }
 
 describe('Account Mongo Repository', () => {
-  beforeAll(async () => {
-    await MongoHelper.connect(global.__MONGO_URI__)
+	beforeAll(async () => {
+		await MongoHelper.connect(global.__MONGO_URI__)
 		MockDate.set(new Date())
-  })
+	})
 
-  afterAll(async () => {
-    await MongoHelper.disconnect()
+	afterAll(async () => {
+		await MongoHelper.disconnect()
 		MockDate.reset()
-  })
+	})
 
-  beforeEach(async () => {
-    surveyCollection = await MongoHelper.getCollection('surveys')
-    await surveyCollection.deleteMany({})
-  })
+	beforeEach(async () => {
+		surveyCollection = await MongoHelper.getCollection('surveys')
+		await surveyCollection.deleteMany({})
+	})
 
-  test('Should add a survey on  success', async () => {
-    const sut = makeSut()
-    await sut.add(makeSurveyData())
+	describe('add()', () => {
+		test('Should add a survey on  success', async () => {
+			const sut = makeSut()
+			await sut.add(makeSurveyData())
 
-    const survey = await surveyCollection.findOne({ question: 'any_question' })
-    expect(survey).toBeTruthy()
-  })
+			const survey = await surveyCollection.findOne({ question: 'any_question' })
+			expect(survey).toBeTruthy()
+		})
+	})
+
+	describe('loadAll()', () => {
+		test('Should load all surveys on success', async () => {
+			await surveyCollection.insertMany([{
+				question: 'any_question',
+				answers: [
+					{
+						image: 'any_image',
+						answer: 'any_answer'
+					}, {
+						answer: 'any_answer2'
+					}
+				],
+				date: new Date()
+			}, {
+				question: 'other_question',
+				answers: [
+					{
+						image: 'other_image',
+						answer: 'other_answer'
+					}, {
+						answer: 'other_answer2'
+					}
+				],
+				date: new Date()
+			}])
+
+			const sut = makeSut()
+			const surveys = await sut.loadAll()
+			expect(surveys.length).toBe(2)
+			expect(surveys[0].question).toBe('any_question')
+			expect(surveys[1].question).toBe('other_question')
+		})
+	})
 })
