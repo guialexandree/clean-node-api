@@ -1,7 +1,7 @@
 import { Controller } from '@/presentation/protocols'
 import { SignInController } from '@/presentation/controllers/login/signin/signin-controller'
 import { makeSignInValidation } from './signin-validation-factory'
-import { makeAuthentication } from '../../../usecases/authentication/authentication-factory'
+import { makeAuthentication } from '../../../usecases/authentication/db-authentication-factory'
 import { makeControllerDecorator } from '../../../decorator/log-controller-decoractor-factory'
 
 export const makeSignInController = (): Controller => {
