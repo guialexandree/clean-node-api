@@ -24,6 +24,41 @@ const makeSurveyDate = (): AddSurveyModel => {
   }
 }
 
+const makeAccessToken = async (role?: string): Promise<string> => {
+	const res = await accountCollection.insertOne({
+		name: 'Guilherme Alexandre',
+		email: 'guilherme_alexandre@hotmail.com',
+		password: '123',
+		role
+	})
+	const id = res.insertedId.toString()
+	const accessToken = sign({ id }, env.jwtSecret)
+	await accountCollection.updateOne({
+		_id: res.insertedId
+	}, {
+		$set: {
+			accessToken
+		}
+	})
+
+	return accessToken
+}
+
+const createSurveys = async (): Promise<void> => {
+	await surveyCollection.insertMany([{
+		question: 'any_question',
+		answers: [
+			{
+				image: 'any_image',
+				answer: 'any_answer'
+			}, {
+				answer: 'any_answer2'
+			}
+		],
+		date: new Date()
+	}])
+}
+
 describe('Login Routes', () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const app = require('../config/app').default
@@ -55,21 +90,7 @@ describe('Login Routes', () => {
     })
 
 		test('Should return 204 on add survey with valid accessToken', async () => {
-      const res = await accountCollection.insertOne({
-        name: 'Guilherme Alexandre',
-        email: 'guilherme_alexandre@hotmail.com',
-        password: '123',
-				role: 'admin'
-      })
-			const id = res.insertedId.toString()
-			const accessToken = sign({ id }, env.jwtSecret)
-			await accountCollection.updateOne({
-				_id: res.insertedId
-			}, {
-				$set: {
-					accessToken
-				}
-			})
+      const accessToken = await makeAccessToken('admin')
 
 			await request(app)
         .post('/api/survey')
@@ -84,6 +105,16 @@ describe('Login Routes', () => {
       await request(app)
         .get('/api/surveys')
         .expect(403)
+    })
+
+		test('Should return 200 on load surveys with valid accessToken', async () => {
+      await createSurveys()
+			const accessToken = await makeAccessToken()
+
+			await request(app)
+        .get('/api/surveys')
+				.set('x-access-token', accessToken)
+        .expect(200)
     })
   })
 })

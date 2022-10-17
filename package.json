@@ -8,7 +8,7 @@
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "dev": "sucrase-node src/main/server.ts",
     "debug": "nodemon --watch ./dist --inspect --nolazy dist/main/server.js",
-    "test": "jest --passWithNoTests --noStackTrace",
+    "test": "jest --passWithNoTests --noStackTrace --runInBand",
     "test:dev": "jest --passWithNoTests -c jest-unit-config.js",
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch --noStackTrace -c jest-unit-config.js",
