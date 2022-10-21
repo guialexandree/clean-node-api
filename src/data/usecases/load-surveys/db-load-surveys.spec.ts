@@ -73,7 +73,7 @@ describe('DbLoadSurveys UseCase', () => {
 		expect(surveys).toEqual(makeFakeSurveys())
 	})
 
-	test('Should throw if LoadAccountByTokenRepository throws', () => {
+	test('Should throw if LoadSurveysRepository throws', () => {
     const { sut, loadSurveysRepositoryStub } = makeSut()
     jest
       .spyOn(loadSurveysRepositoryStub, 'loadAll')
