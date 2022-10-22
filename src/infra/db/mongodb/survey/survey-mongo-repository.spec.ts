@@ -47,6 +47,23 @@ const createSurveys = async (): Promise<void> => {
 	}])
 }
 
+const createSurvey = async (): Promise<string> => {
+	const survey = await surveyCollection.insertOne({
+		question: 'any_question',
+		answers: [
+			{
+				image: 'any_image',
+				answer: 'any_answer'
+			}, {
+				answer: 'any_answer2'
+			}
+		],
+		date: new Date()
+	})
+
+	return survey.insertedId.toString()
+}
+
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
 }
@@ -70,9 +87,10 @@ describe('Account Mongo Repository', () => {
 	describe('add()', () => {
 		test('Should add a survey on  success', async () => {
 			const sut = makeSut()
-			await sut.add(makeSurveyData())
 
+			await sut.add(makeSurveyData())
 			const survey = await surveyCollection.findOne({ question: 'any_question' })
+
 			expect(survey).toBeTruthy()
 		})
 	})
@@ -80,9 +98,10 @@ describe('Account Mongo Repository', () => {
 	describe('loadAll()', () => {
 		test('Should load all surveys on success', async () => {
 			await createSurveys()
-
 			const sut = makeSut()
+
 			const surveys = await sut.loadAll()
+
 			expect(surveys.length).toBe(2)
 			expect(surveys[0].question).toBe('any_question')
 			expect(surveys[1].question).toBe('other_question')
@@ -90,8 +109,21 @@ describe('Account Mongo Repository', () => {
 
 		test('Should load empty list', async () => {
 			const sut = makeSut()
+
 			const surveys = await sut.loadAll()
+
 			expect(surveys.length).toBe(0)
+		})
+	})
+
+	describe('loadById()', () => {
+		test('Should load survey by id on success', async () => {
+			const id = await createSurvey()
+			const sut = makeSut()
+
+			const surveys = await sut.loadById(id)
+
+			expect(surveys).toBeTruthy()
 		})
 	})
 })
