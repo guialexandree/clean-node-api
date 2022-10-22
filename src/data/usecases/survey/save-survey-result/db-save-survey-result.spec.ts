@@ -11,10 +11,10 @@ const makeFakeSaveSurveyResultData = (): SaveSurveyResultModel => {
   }
 }
 
-const makeFakeSaveSurveyResult = (): SurveyResultModel =>
+const makeFakeSaveSurveyResult = (): SurveyResultModel => (
   Object.assign({}, makeFakeSaveSurveyResultData(), {
     id: 'any_id'
-  })
+  }))
 
 const makeDbSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class DbSaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
@@ -53,9 +53,9 @@ describe('DbAddSurvey Usecase', () => {
     const { sut, dbSaveSurveyResultRepositoryStub } = makeSut()
     const saveSpy = jest.spyOn(dbSaveSurveyResultRepositoryStub, 'save')
 
-    await sut.save(makeFakeSaveSurveyResult())
+    await sut.save(makeFakeSaveSurveyResultData())
 
-    expect(saveSpy).toHaveBeenCalledWith(makeFakeSaveSurveyResult())
+    expect(saveSpy).toHaveBeenCalledWith(makeFakeSaveSurveyResultData())
   })
 
 	test('Should throw if LoadSurveyByIdRepository throws', () => {
@@ -64,8 +64,16 @@ describe('DbAddSurvey Usecase', () => {
       .spyOn(dbSaveSurveyResultRepositoryStub, 'save')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
 
-    const promise = sut.save(makeFakeSaveSurveyResult())
+    const promise = sut.save(makeFakeSaveSurveyResultData())
 
     void expect(promise).rejects.toThrow()
   })
+
+	test('Should return SurveyResult on success', async () => {
+		const { sut } = makeSut()
+		const surveyData = makeFakeSaveSurveyResultData()
+		const surveys = await sut.save(surveyData)
+
+		expect(surveys).toEqual(makeFakeSaveSurveyResult())
+	})
 })
