@@ -85,13 +85,15 @@ describe('Account Mongo Repository', () => {
 	})
 
 	describe('add()', () => {
-		test('Should add a survey on  success', async () => {
+		test('Should add a survey on success', async () => {
 			const sut = makeSut()
 
 			await sut.add(makeSurveyData())
-			const survey = await surveyCollection.findOne({ question: 'any_question' })
 
+			const result = await surveyCollection.findOne({ question: 'any_question' })
+			const survey = MongoHelper.map(result)
 			expect(survey).toBeTruthy()
+			expect(survey.id).toBeTruthy()
 		})
 	})
 
@@ -103,6 +105,7 @@ describe('Account Mongo Repository', () => {
 			const surveys = await sut.loadAll()
 
 			expect(surveys.length).toBe(2)
+			expect(surveys[0].id).toBeTruthy()
 			expect(surveys[0].question).toBe('any_question')
 			expect(surveys[1].question).toBe('other_question')
 		})
@@ -124,6 +127,7 @@ describe('Account Mongo Repository', () => {
 			const surveys = await sut.loadById(id)
 
 			expect(surveys).toBeTruthy()
+			expect(surveys.id).toBeTruthy()
 		})
 	})
 })
