@@ -1,4 +1,4 @@
-import { AddSurveyModel } from '@/domain/usecases/add-survey'
+import { AddSurveyModel } from '@/domain/usecases/survey/add-survey'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helpers'
 import env from '@/main/config/env'
 import request from 'supertest'

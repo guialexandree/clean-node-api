@@ -1,7 +1,7 @@
-import { Collection, ObjectId } from 'mongodb'
+import { SurveyModel } from './survey-result-mongo-repository-protocols'
+import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helpers'
-import { SurveyModel } from '../survey/survey-mongo-protocols'
-import { SurveyResultMongoRepository } from './survey-result-monto-repository'
+import { Collection, ObjectId } from 'mongodb'
 
 let accountCollection: Collection
 let surveyResultCollection: Collection
