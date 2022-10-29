@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors'
-import { forbidden } from '@/presentation/helpers/http/http-helper'
+import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
 import { SaveSurveyResultController } from './save-survey-resut-controller'
 import { LoadSurveyById, SurveyModel, HttpRequest } from './save-survey-resut-controller-protocols'
 
@@ -71,14 +71,14 @@ describe('SaveSurveyResult Controller', () => {
 		expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')))
 	})
 
-	test('Should throw if LoadSurveyById throws', () => {
+	test('Should throw if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest
       .spyOn(loadSurveyByIdStub, 'loadById')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
 
-    const promise = sut.handle(makeFakeRequest())
+    const httpResponse = await sut.handle(makeFakeRequest())
 
-    void expect(promise).rejects.toThrow()
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
