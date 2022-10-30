@@ -1,3 +1,4 @@
+import { throwError } from '@/domain/test'
 import bcrypt from 'bcrypt'
 import { BcryptAdapter } from './bcrypt-adapter'
 
@@ -41,7 +42,7 @@ describe('Bcrypt Adapter', () => {
 				ReturnType<(key: string) => Promise<string>>,
 				Parameters<(key: string) => Promise<string>>
 				>
-			hashSpy.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+			hashSpy.mockImplementationOnce(throwError)
 
 			const promise = sut.hash('any_value')
 

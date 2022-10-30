@@ -1,25 +1,10 @@
-import { AddSurveyModel } from './survey-mongo-protocols'
 import { SurveyMongoRepository } from './survey-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helpers'
 import { Collection } from 'mongodb'
 import MockDate from 'mockdate'
+import { mockFakeAddSurvey } from '@/domain/test'
 
 let surveyCollection: Collection
-
-const makeSurveyData = (): AddSurveyModel => {
-  return {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }, {
-        answer: 'other_answer'
-      }
-    ],
-		date: new Date()
-  }
-}
 
 const createSurveys = async (): Promise<void> => {
 	await surveyCollection.insertMany([{
@@ -48,18 +33,7 @@ const createSurveys = async (): Promise<void> => {
 }
 
 const createSurvey = async (): Promise<string> => {
-	const survey = await surveyCollection.insertOne({
-		question: 'any_question',
-		answers: [
-			{
-				image: 'any_image',
-				answer: 'any_answer'
-			}, {
-				answer: 'any_answer2'
-			}
-		],
-		date: new Date()
-	})
+	const survey = await surveyCollection.insertOne(mockFakeAddSurvey())
 
 	return survey.insertedId.toString()
 }
@@ -88,7 +62,7 @@ describe('Account Mongo Repository', () => {
 		test('Should add a survey on success', async () => {
 			const sut = makeSut()
 
-			await sut.add(makeSurveyData())
+			await sut.add(mockFakeAddSurvey())
 
 			const result = await surveyCollection.findOne({ question: 'any_question' })
 			const survey = MongoHelper.map(result)

@@ -1,9 +1,9 @@
 import { AccountModel } from '../../models/account'
 
-export interface GetAccountModel {
+export interface GetAccountParams {
   email: string
 }
 
 export interface GetAccount {
-  get: (account: GetAccountModel) => Promise<AccountModel>
+  get: (account: GetAccountParams) => Promise<AccountModel>
 }

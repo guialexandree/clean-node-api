@@ -1,6 +1,6 @@
+import { mockAccountModel, mockAddAccountParams, throwError } from '@/domain/test'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helpers'
-import { AddAccountModel } from './account-mongo-protocols'
 import { AccountMongoRepository } from './account-mongo-repository'
 
 let accountCollection: Collection
@@ -8,12 +8,6 @@ let accountCollection: Collection
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
 }
-
-const makeFakeAccount = (): AddAccountModel => ({
-  name: 'any_name',
-  email: 'any_email',
-  password: 'any_password'
-})
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
@@ -32,42 +26,31 @@ describe('Account Mongo Repository', () => {
 	describe('add()', () => {
 		test('Should return an account on success', async () => {
 			const sut = makeSut()
+			const addAccountParams = mockAddAccountParams()
 
-			const account = await sut.add(makeFakeAccount())
+			const account = await sut.add(addAccountParams)
 
 			expect(account).toBeTruthy()
 			expect(account.id).toBeTruthy()
-			expect(account.name).toBe('any_name')
-			expect(account.email).toBe('any_email')
-			expect(account.password).toBe('any_password')
+			expect(account.name).toBe(addAccountParams.name)
+			expect(account.email).toBe(addAccountParams.email)
+			expect(account.password).toBe(addAccountParams.password)
 		})
 	})
 
 	describe('loadByEmail()', () => {
 		test('Should return account on loadByEmail success', async () => {
 			const sut = makeSut()
+			const addAccountParams = mockAddAccountParams()
 
-			await accountCollection.insertOne(makeFakeAccount())
-			const account = await sut.loadByEmail('any_email')
-
-			expect(account).toBeTruthy()
-			expect(account.id).toBeTruthy()
-			expect(account.name).toBe('any_name')
-			expect(account.email).toBe('any_email')
-			expect(account.password).toBe('any_password')
-		})
-
-		test('Should return account on loadByEmail success', async () => {
-			const sut = makeSut()
-
-			await accountCollection.insertOne(makeFakeAccount())
-			const account = await sut.loadByEmail('any_email')
+			await accountCollection.insertOne(addAccountParams)
+			const account = await sut.loadByEmail(addAccountParams.email)
 
 			expect(account).toBeTruthy()
 			expect(account.id).toBeTruthy()
-			expect(account.name).toBe('any_name')
-			expect(account.email).toBe('any_email')
-			expect(account.password).toBe('any_password')
+			expect(account.name).toBe(addAccountParams.name)
+			expect(account.email).toBe(addAccountParams.email)
+			expect(account.password).toBe(addAccountParams.password)
 		})
 
 		test('Should return null if loadByEmail fails', async () => {
@@ -82,9 +65,10 @@ describe('Account Mongo Repository', () => {
 	describe('updateAccessToken()', () => {
 		test('Should update the account on updateAccessToken success', async () => {
 			const sut = makeSut()
-			const { insertedId } = await accountCollection.insertOne(makeFakeAccount())
-
+			const addAccountParams = mockAddAccountParams()
+			const { insertedId } = await accountCollection.insertOne(addAccountParams)
 			await sut.updateAccessToken(insertedId.toString(), 'any_token')
+
 			const account = await accountCollection.findOne({ _id: insertedId })
 
 			expect(account).toBeTruthy()
@@ -93,10 +77,11 @@ describe('Account Mongo Repository', () => {
 
 		test('Should throws if updateAccessToken throws', async () => {
 			const sut = makeSut()
-			const { insertedId } = await accountCollection.insertOne(makeFakeAccount())
+			const addAccountParams = mockAddAccountParams()
+			const { insertedId } = await accountCollection.insertOne(addAccountParams)
 			jest
 				.spyOn(sut, 'updateAccessToken')
-				.mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+				.mockReturnValueOnce(new Promise((resolve, reject) => reject(throwError)))
 
 			const promise = sut.updateAccessToken(insertedId.toString(), 'any_token')
 
@@ -107,29 +92,28 @@ describe('Account Mongo Repository', () => {
 	describe('loadAccountByToken()', () => {
 		test('Should return account on loadAccountByToken with admin role', async () => {
 			const sut = makeSut()
-
-			await accountCollection.insertOne({
-				...makeFakeAccount(),
+			const addAccountParams = mockAddAccountParams()
+			await accountCollection.insertOne(Object.assign({}, addAccountParams, {
 				accessToken: 'any_token',
 				role: 'admin'
-			})
+			}))
+
 			const account = await sut.loadByToken('any_token', 'admin')
 
 			expect(account).toBeTruthy()
 			expect(account.id).toBeTruthy()
-			expect(account.name).toBe('any_name')
-			expect(account.email).toBe('any_email')
-			expect(account.password).toBe('any_password')
+			expect(account.name).toBe(addAccountParams.name)
+			expect(account.email).toBe(addAccountParams.email)
+			expect(account.password).toBe(addAccountParams.password)
 		})
 
 		test('Should return null on loadAccountByToken with invalid role', async () => {
 			const sut = makeSut()
-
-			await accountCollection.insertOne({
-				...makeFakeAccount(),
+			await accountCollection.insertOne(Object.assign({}, mockAccountModel(), {
 				accessToken: 'any_token',
 				role: 'client'
-			})
+			}))
+
 			const account = await sut.loadByToken('any_token', 'admin')
 
 			expect(account).toBeFalsy()
@@ -137,19 +121,19 @@ describe('Account Mongo Repository', () => {
 
 		test('Should return an account on loadAccountByToken with if user is admin', async () => {
 			const sut = makeSut()
-
-			await accountCollection.insertOne({
-				...makeFakeAccount(),
+			const addAccountParams = mockAddAccountParams()
+			await accountCollection.insertOne(Object.assign({}, addAccountParams, {
 				accessToken: 'any_token',
 				role: 'admin'
-			})
+			}))
+
 			const account = await sut.loadByToken('any_token')
 
 			expect(account).toBeTruthy()
 			expect(account.id).toBeTruthy()
-			expect(account.name).toBe('any_name')
-			expect(account.email).toBe('any_email')
-			expect(account.password).toBe('any_password')
+			expect(account.name).toBe(addAccountParams.name)
+			expect(account.email).toBe(addAccountParams.email)
+			expect(account.password).toBe(addAccountParams.password)
 		})
 
 		test('Should return null if loadByToken fails', async () => {

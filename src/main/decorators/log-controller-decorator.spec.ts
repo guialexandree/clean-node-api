@@ -1,28 +1,19 @@
 
-import { AccountModel } from '@/domain/models/account'
 import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { LogControllerDecorator } from './log-controller-decorator'
+import { mockAccountModel } from '@/domain/test'
+import { mockErrorRepository } from '@/data/test'
 
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return await new Promise(resolve => resolve(ok(makeFakeAccount())))
+      return await new Promise(resolve => resolve(ok(mockAccountModel())))
     }
   }
 
   return new ControllerStub()
-}
-
-const makeErrorRepository = (): LogErrorRepository => {
-  class LogErrorRepositoryStub implements LogErrorRepository {
-    async logError (stack: string): Promise<void> {
-      return await new Promise(resolve => resolve())
-    }
-  }
-
-  return new LogErrorRepositoryStub()
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -34,13 +25,6 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
-const makeFakeAccount = (): AccountModel => ({
-  id: 'valid_id',
-  email: 'email@email.com',
-  name: 'any_name',
-  password: 'any_password'
-})
-
 interface SutTypes {
   sut: LogControllerDecorator
   controller: Controller
@@ -49,7 +33,7 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const controller = makeController()
-  const logErrorRepository = makeErrorRepository()
+  const logErrorRepository = mockErrorRepository()
   const sut = new LogControllerDecorator(controller, logErrorRepository)
 
   return {
@@ -73,7 +57,7 @@ describe('LogController Decorator', () => {
     const { sut } = makeSut()
     const response = await sut.handle(makeFakeRequest())
 
-    expect(response).toEqual(ok(makeFakeAccount()))
+    expect(response).toEqual(ok(mockAccountModel()))
   })
 
   test('Should call LogErrorRepository if controller return a server error', async () => {

@@ -1,46 +1,10 @@
-import { LoadSurveys, SurveyModel } from './load-surveys-controller-protocols'
+import { LoadSurveys } from './load-surveys-controller-protocols'
 import { LoadSurveysController } from './load-surveys.controller'
 import { noContent, ok, serverError } from '@/presentation/helpers/http/http-helper'
 import MockDate from 'mockdate'
 import { InternalServerError } from '@/presentation/errors'
-
-const makeLoadSurveys = (): LoadSurveys => {
-	class LoadSurveysStub implements LoadSurveys {
-		async load (): Promise<SurveyModel[]> {
-			return await new Promise(resolve => resolve(makeFakeSurveys()))
-		}
-	}
-
-	return new LoadSurveysStub()
-}
-
-const makeFakeSurveys = (): SurveyModel[] => {
-	return [{
-		id: 'any_id',
-		question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer'
-      }, {
-        answer: 'other_answer'
-      }
-    ],
-		date: new Date()
-	}, {
-		id: 'other_id',
-		question: 'other_question',
-    answers: [
-      {
-        image: 'other_image',
-        answer: 'other_answer'
-      }, {
-        answer: 'other_answer'
-      }
-    ],
-		date: new Date()
-	}]
-}
+import { mockLoadSurveys } from '@/presentation/test'
+import { mockSurveysModel } from '@/domain/test'
 
 type SutTypes = {
 	sut: LoadSurveysController
@@ -48,7 +12,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-	const loadSurveysStub = makeLoadSurveys()
+	const loadSurveysStub = mockLoadSurveys()
 	const sut = new LoadSurveysController(loadSurveysStub)
 
 	return {
@@ -80,7 +44,7 @@ describe('LoadSurveys Controller', () => {
 
 		const httpReponse = await sut.handle({})
 
-		expect(httpReponse).toEqual(ok(makeFakeSurveys()))
+		expect(httpReponse).toEqual(ok(mockSurveysModel()))
 	})
 
 	test('Should returns 204 if loadSurveys returns empty', async () => {
