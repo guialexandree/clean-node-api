@@ -9,7 +9,7 @@ import { mockErrorRepository } from '@/data/test'
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return await new Promise(resolve => resolve(ok(mockAccountModel())))
+      return await Promise.resolve(ok(mockAccountModel()))
     }
   }
 
@@ -67,7 +67,7 @@ describe('LogController Decorator', () => {
     const logSpy = jest.spyOn(logErrorRepository, 'logError')
     jest
       .spyOn(controller, 'handle')
-      .mockReturnValueOnce(new Promise(resolve => resolve(serverError(fakeError))))
+      .mockReturnValueOnce(Promise.resolve(serverError(fakeError)))
 
     await sut.handle(makeFakeRequest())
 
@@ -81,7 +81,7 @@ describe('LogController Decorator', () => {
     const logSpy = jest.spyOn(logErrorRepository, 'logError')
     jest
       .spyOn(controller, 'handle')
-      .mockReturnValueOnce(new Promise(resolve => resolve(serverError(fakeError))))
+      .mockReturnValueOnce(Promise.resolve(serverError(fakeError)))
 
     await sut.handle(makeFakeRequest())
 

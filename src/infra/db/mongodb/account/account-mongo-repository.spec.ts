@@ -81,7 +81,7 @@ describe('Account Mongo Repository', () => {
 			const { insertedId } = await accountCollection.insertOne(addAccountParams)
 			jest
 				.spyOn(sut, 'updateAccessToken')
-				.mockReturnValueOnce(new Promise((resolve, reject) => reject(throwError)))
+				.mockReturnValueOnce(Promise.reject(throwError))
 
 			const promise = sut.updateAccessToken(insertedId.toString(), 'any_token')
 

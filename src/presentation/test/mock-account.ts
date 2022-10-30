@@ -9,7 +9,7 @@ import { AddAccount } from '@/presentation/middlewares/auth-middleware-protocols
 export const mockAddAccountValidator = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add (account: AddAccountParams): Promise<AccountModel> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
+      return await Promise.resolve(mockAccountModel())
     }
   }
 
@@ -19,7 +19,7 @@ export const mockAddAccountValidator = (): AddAccount => {
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add (data: AddSurveyParams): Promise<void> {
-      return await new Promise(resolve => resolve(null))
+      return await Promise.resolve(null)
     }
   }
 
@@ -29,7 +29,7 @@ export const mockAddSurvey = (): AddSurvey => {
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
     async auth (authentication: AuthenticationParams): Promise<string> {
-      return await new Promise(resolve => resolve('any_token'))
+      return await Promise.resolve('any_token')
     }
   }
 
@@ -39,7 +39,7 @@ export const mockAuthentication = (): Authentication => {
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
   class LoadByAccountByTokenStub implements LoadAccountByToken {
     async load (accessToken: string): Promise<AccountModel> {
-      return await new Promise(resolve => resolve(mockAccountModel()))
+      return await Promise.resolve(mockAccountModel())
     }
   }
 
