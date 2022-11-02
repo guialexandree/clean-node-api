@@ -1,3 +1,4 @@
-export * from './sign-in-path'
+export * from './signin-path'
 export * from './survey-path'
-export * from './sign-up-path'
+export * from './signup-path'
+export * from './survey-result-path'
