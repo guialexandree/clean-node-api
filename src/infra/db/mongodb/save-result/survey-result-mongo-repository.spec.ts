@@ -62,61 +62,45 @@ describe('Account Mongo Repository', () => {
 			const sut = makeSut()
 			const survey = await createSurvey()
 			const accountId = await createAccount()
-			const otherAccountId = await createAccount()
-			await surveyResultCollection.insertOne({
-				accountId: otherAccountId.toString(),
-				surveyId: new ObjectId(survey.id),
-				answer: survey.answers[1].answer,
-				date: new Date()
-			})
 
 			const surveyResult = await sut.save({
 				accountId: accountId.toString(),
 				surveyId: survey.id,
-				answer: survey.answers[0].answer,
+				answer: survey.answers[1].answer,
 				date: new Date()
 			})
 
 			expect(surveyResult).toBeTruthy()
 			expect(surveyResult.surveyId).toEqual(survey.id)
-			expect(surveyResult.answers[1].answer).toEqual(survey.answers[1].answer)
-			expect(surveyResult.answers[1].count).toEqual(1)
-			expect(surveyResult.answers[1].percent).toEqual(50)
+			expect(surveyResult.answers[0].answer).toBe(survey.answers[1].answer)
+			expect(surveyResult.answers[0].count).toBe(1)
+			expect(surveyResult.answers[0].percent).toBe(100)
 		})
 
 		test('Should add an survey result if its not new', async () => {
 			const sut = makeSut()
 			const survey = await createSurvey()
 			const accountId = await createAccount()
-			const otherAccountId = await createAccount()
 			await surveyResultCollection.insertOne({
-				accountId: otherAccountId.toString(),
+				accountId,
 				surveyId: new ObjectId(survey.id),
-				answer: survey.answers[1].answer,
-				date: new Date()
-			})
-
-			let surveyResult = await sut.save({
-				accountId: accountId.toString(),
-				surveyId: survey.id,
-				answer: survey.answers[1].answer,
-				date: new Date()
-			})
-
-			expect(surveyResult.answers[0].count).toEqual(2)
-			expect(surveyResult.answers[0].percent).toEqual(100)
-
-			surveyResult = await sut.save({
-				accountId: accountId.toString(),
-				surveyId: survey.id,
 				answer: survey.answers[0].answer,
 				date: new Date()
 			})
 
+			const surveyResult = await sut.save({
+				accountId: accountId.toString(),
+				surveyId: survey.id,
+				answer: survey.answers[1].answer,
+				date: new Date()
+			})
+
 			expect(surveyResult.surveyId).toEqual(survey.id)
-			expect(surveyResult.answers[0].count).toEqual(1)
-			expect(surveyResult.answers[0].answer).toEqual(survey.answers[0].answer)
-			expect(surveyResult.answers[0].percent).toEqual(50)
+			expect(surveyResult.answers[0].answer).toBe(survey.answers[1].answer)
+			expect(surveyResult.answers[0].count).toBe(1)
+			expect(surveyResult.answers[0].percent).toBe(100)
+			expect(surveyResult.answers[1].count).toBe(0)
+			expect(surveyResult.answers[1].percent).toBe(0)
 		})
 	})
 })
