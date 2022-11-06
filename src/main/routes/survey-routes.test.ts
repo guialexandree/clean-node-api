@@ -1,5 +1,5 @@
 import { AddSurveyParams } from '@/domain/usecases/survey/add-survey'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helpers'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import env from '@/main/config/env'
 import request from 'supertest'
 import { Collection } from 'mongodb'

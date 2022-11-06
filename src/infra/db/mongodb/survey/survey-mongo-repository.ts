@@ -1,6 +1,6 @@
 
 import { AddSurveyRepository, AddSurveyParams, SurveyModel, LoadSurveysRepository, LoadSurveyById } from './survey-mongo-protocols'
-import { MongoHelper } from '../helpers/mongo-helpers'
+import { MongoHelper } from '../helpers/mongo-helper'
 import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyById {

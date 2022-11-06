@@ -1,6 +1,6 @@
 import { SurveyModel } from './survey-result-mongo-repository-protocols'
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
-import { MongoHelper } from '../helpers/mongo-helpers'
+import { MongoHelper } from '../helpers/mongo-helper'
 import { Collection, ObjectId } from 'mongodb'
 
 let accountCollection: Collection

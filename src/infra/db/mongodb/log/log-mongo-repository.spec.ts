@@ -1,4 +1,4 @@
-import { MongoHelper } from '../helpers/mongo-helpers'
+import { MongoHelper } from '../helpers/mongo-helper'
 import { LogMongoRepository } from './log-mongo-repository'
 
 describe('Log Mongo Repository', () => {
