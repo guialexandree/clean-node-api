@@ -5,7 +5,7 @@ import { QueryBuilder } from '../helpers'
 import { LoadSurveyResultRepository } from '@/data/protocols/db/survey-result/load-survey-result-repository'
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository, LoadSurveyResultRepository {
-	async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
+	async save (data: SaveSurveyResultParams): Promise<void> {
 		const surveyCollectionCollection = await MongoHelper.getCollection('surveyResults')
     await surveyCollectionCollection.findOneAndUpdate({
 			surveyId: new ObjectId(data.surveyId),
@@ -18,8 +18,6 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository, 
 		}, {
 			upsert: true
 		})
-		const surveyResults = await this.loadBySurveyId(data.surveyId)
-    return surveyResults
 	}
 
 	public async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
