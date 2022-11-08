@@ -64,7 +64,7 @@ describe('SaveSurveyResult Controller', () => {
 		expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')))
 	})
 
-	test('Should throw if LoadSurveyById throws', async () => {
+	test('Should return 500 if LoadSurveyById throws', async () => {
 		const { sut, loadSurveyByIdStub } = makeSut()
     jest
 			.spyOn(loadSurveyByIdStub, 'loadById')
