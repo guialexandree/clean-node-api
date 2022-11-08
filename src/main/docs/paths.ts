@@ -7,7 +7,7 @@ import {
 
 export default {
 	'/signin': signInPath,
-	'/singup': signUpPath,
+	'/signup': signUpPath,
 	'/surveys': surveyPath,
 	'/surveys/{surveyId}/results': surveyResultPath
 }
