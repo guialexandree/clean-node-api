@@ -20,7 +20,6 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
 				}))
 			}
 		}
-		console.log(surveyResult)
 		return surveyResult
 	}
 }
