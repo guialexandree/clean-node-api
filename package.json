@@ -13,8 +13,8 @@
     "test:verbose": "jest --passWithNoTests",
     "test:unit": "npm test -- --watch --noStackTrace -c jest-unit-config.js",
     "test:integration": "npm test -- -c jest-integration-config.js",
-    "test:related": "npm test -- --findRelatedTests ./src",
-    "test:ci": "npm test -- --coverage",
+    "test:related": "npm test -- --findRelatedTests ./src --clearCache",
+    "test:ci": "npm test -- --coverage --clearCache",
     "prepare": "husky install"
   },
   "author": "Guilherme Alexandre Rocha Pereira",
