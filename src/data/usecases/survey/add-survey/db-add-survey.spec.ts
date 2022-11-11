@@ -1,20 +1,20 @@
-import { mockFakeAddSurvey, throwError } from '@/domain/test'
-import { DbAddSurvey, AddSurveyRepository } from './db-add-survey-protocols'
-import { mockDbAddSurveyRepository } from '@/data/test/mock-db-survey'
+import { mockAddSurveyParams, throwError } from '@/domain/test'
+import { DbAddSurvey } from './db-add-survey-protocols'
+import { AddSurveyRepositorySpy } from '@/data/test/mock-db-survey'
 import MockDate from 'mockdate'
 
 interface SutTypes {
   sut: DbAddSurvey
-  dbAddSurveyRepositoryStub: AddSurveyRepository
+  dbAddSurveyRepositorySpy: AddSurveyRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const dbAddSurveyRepositoryStub = mockDbAddSurveyRepository()
-  const sut = new DbAddSurvey(dbAddSurveyRepositoryStub)
+  const dbAddSurveyRepositorySpy = new AddSurveyRepositorySpy()
+  const sut = new DbAddSurvey(dbAddSurveyRepositorySpy)
 
   return {
     sut,
-    dbAddSurveyRepositoryStub
+    dbAddSurveyRepositorySpy
   }
 }
 
@@ -28,21 +28,21 @@ describe('DbAddSurvey Usecase', () => {
 	})
 
   test('Should call DbAddSurveyRepository with correct values', async () => {
-    const { sut, dbAddSurveyRepositoryStub } = makeSut()
-    const loadSpy = jest.spyOn(dbAddSurveyRepositoryStub, 'add')
+    const { sut, dbAddSurveyRepositorySpy } = makeSut()
+		const addSurveyData = mockAddSurveyParams()
 
-    await sut.add(mockFakeAddSurvey())
+    await sut.add(addSurveyData)
 
-    expect(loadSpy).toHaveBeenCalledWith(mockFakeAddSurvey())
+    expect(dbAddSurveyRepositorySpy.addSurveyParams).toEqual(addSurveyData)
   })
 
   test('Should returns throws if DbAddSurveyRepository throws', async () => {
-    const { sut, dbAddSurveyRepositoryStub } = makeSut()
+    const { sut, dbAddSurveyRepositorySpy } = makeSut()
     jest
-      .spyOn(dbAddSurveyRepositoryStub, 'add')
+      .spyOn(dbAddSurveyRepositorySpy, 'add')
       .mockImplementationOnce(throwError)
 
-    const promise = sut.add(mockFakeAddSurvey())
+    const promise = sut.add(mockAddSurveyParams())
 
     void expect(promise).rejects.toThrow(new Error())
   })

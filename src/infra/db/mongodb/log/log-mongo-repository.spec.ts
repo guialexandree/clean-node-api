@@ -1,7 +1,8 @@
 import { MongoHelper } from '../helpers/mongo-helper'
 import { LogMongoRepository } from './log-mongo-repository'
+import faker from 'faker'
 
-describe('Log Mongo Repository', () => {
+describe('LogMongoRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(global.__MONGO_URI__)
   })
@@ -21,7 +22,7 @@ describe('Log Mongo Repository', () => {
 
   test('Should create an erro log on success', async () => {
     const sut = makeSut()
-    await sut.logError('any_error')
+    await sut.logError(faker.random.words())
 
     const errorCollection = await MongoHelper.getCollection('errors')
     const count = await errorCollection.countDocuments()

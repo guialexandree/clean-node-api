@@ -1,47 +1,39 @@
 import { mockAccountModel } from '@/domain/test'
 import { AccountModel } from '@/domain/models/account'
 import { AddAccountParams } from '@/domain/usecases/account/add-account'
-import { AddSurvey, AddSurveyParams } from '@/domain/usecases/survey/add-survey'
 import { LoadAccountByToken } from '@/domain/usecases/account/load-account-by-token'
 import { Authentication, AuthenticationParams } from '@/domain/usecases/account/authentication'
 import { AddAccount } from '@/presentation/middlewares/auth-middleware-protocols'
+import faker from 'faker'
 
-export const mockAddAccountValidator = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<AccountModel> {
-      return await Promise.resolve(mockAccountModel())
-    }
+export class AddAccountSpy implements AddAccount {
+	accountModel = mockAccountModel()
+  addAccountParams: AddAccountParams
+
+  async add (account: AddAccountParams): Promise<AccountModel> {
+    this.addAccountParams = account
+    return await Promise.resolve(this.accountModel)
   }
-
-  return new AddAccountStub()
 }
 
-export const mockAddSurvey = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyParams): Promise<void> {
-      return await Promise.resolve(null)
-    }
-  }
+export class AuthenticationSpy implements Authentication {
+	authenticationParams: AuthenticationParams
+  token = faker.datatype.uuid()
 
-  return new AddSurveyStub()
+  async auth (authenticationParams: AuthenticationParams): Promise<string> {
+    this.authenticationParams = authenticationParams
+    return await Promise.resolve(this.token)
+  }
 }
 
-export const mockAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationParams): Promise<string> {
-      return await Promise.resolve('any_token')
-    }
+export class LoadAccountByTokenSpy implements LoadAccountByToken {
+	accountModel = mockAccountModel()
+  accessToken: string
+  role: string
+
+  async load (accessToken: string, role?: string): Promise<AccountModel> {
+    this.accessToken = accessToken
+    this.role = role
+    return await Promise.resolve(this.accountModel)
   }
-
-  return new AuthenticationStub()
-}
-
-export const mockLoadAccountByToken = (): LoadAccountByToken => {
-  class LoadByAccountByTokenStub implements LoadAccountByToken {
-    async load (accessToken: string): Promise<AccountModel> {
-      return await Promise.resolve(mockAccountModel())
-    }
-  }
-
-  return new LoadByAccountByTokenStub()
 }

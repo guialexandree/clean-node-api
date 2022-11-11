@@ -10,10 +10,10 @@ import {
 } from './account-mongo-protocols'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
-  async add (accountData: AddAccountParams): Promise<AccountModel> {
+  async add (data: AddAccountParams): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
-    await accountCollection.insertOne(accountData)
-    return MongoHelper.map(accountData)
+    await accountCollection.insertOne(data)
+    return MongoHelper.map(data)
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {

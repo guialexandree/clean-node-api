@@ -1,15 +1,16 @@
-import { DbLoadSurveyById, LoadSurveyByIdRepository } from './db-load-survey-by-id-protocols'
+import { DbLoadSurveyById } from './db-load-survey-by-id-protocols'
+import { throwError } from '@/domain/test'
+import { LoadSurveyByIdRepositorySpy } from '@/data/test'
 import MockDate from 'mockdate'
-import { mockSurveyModel, throwError } from '@/domain/test'
-import { mockLoadSurveyByIdRepository } from '@/data/test'
+import faker from 'faker'
 
 type SutTypes = {
 	sut: DbLoadSurveyById
-	loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository
+	loadSurveyByIdRepositoryStub: LoadSurveyByIdRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-	const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository()
+	const loadSurveyByIdRepositoryStub = new LoadSurveyByIdRepositorySpy()
 	const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub)
 
   return {
@@ -17,6 +18,8 @@ const makeSut = (): SutTypes => {
 		loadSurveyByIdRepositoryStub
 	}
 }
+
+let surveyId: string
 
 describe('DbLoadSurveyById UseCase', () => {
 	beforeAll(() => {
@@ -27,21 +30,24 @@ describe('DbLoadSurveyById UseCase', () => {
 		MockDate.reset()
 	})
 
+	beforeEach(() => {
+    surveyId = faker.datatype.uuid()
+  })
+
 	test('Should call LoadSurveyByIdRepository with correct id', async () => {
 		const { sut, loadSurveyByIdRepositoryStub } = makeSut()
-		const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
 
-		await sut.loadById('any_id')
+		await sut.loadById(surveyId)
 
-		expect(loadByIdSpy).toHaveBeenCalledWith('any_id')
+		expect(loadSurveyByIdRepositoryStub.id).toBe(surveyId)
 	})
 
 	test('Should return a list of Survey on success', async () => {
-		const { sut } = makeSut()
+		const { sut, loadSurveyByIdRepositoryStub } = makeSut()
 
-		const surveys = await sut.loadById('any_id')
+		const surveys = await sut.loadById(surveyId)
 
-		expect(surveys).toEqual(mockSurveyModel())
+		expect(surveys).toEqual(loadSurveyByIdRepositoryStub.surveyModel)
 	})
 
 	test('Should throw if LoadSurveyByIdRepository throws', () => {
@@ -50,7 +56,7 @@ describe('DbLoadSurveyById UseCase', () => {
       .spyOn(loadSurveyByIdRepositoryStub, 'loadById')
       .mockImplementationOnce(throwError)
 
-    const promise = sut.loadById('any_id')
+    const promise = sut.loadById(surveyId)
 
     void expect(promise).rejects.toThrow()
   })

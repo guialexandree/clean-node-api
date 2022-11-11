@@ -4,10 +4,10 @@ import { MongoHelper } from '../helpers/mongo-helper'
 import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyById {
-  async add (surveyData: AddSurveyParams): Promise<void> {
+  async add (data: AddSurveyParams): Promise<void> {
     const surveyCollection = await MongoHelper.getCollection('surveys')
-    await surveyCollection.insertOne(surveyData)
-    return MongoHelper.map(surveyData)
+    await surveyCollection.insertOne(data)
+    return MongoHelper.map(data)
   }
 
 	async loadAll (): Promise<SurveyModel[]> {

@@ -1,90 +1,81 @@
-
-import { LogErrorRepository } from '@/data/protocols/db/log/log-error-repository'
 import { Controller, HttpRequest, HttpResponse } from '@/presentation/protocols'
 import { ok, serverError } from '@/presentation/helpers/http/http-helper'
 import { LogControllerDecorator } from './log-controller-decorator'
 import { mockAccountModel } from '@/domain/test'
-import { mockErrorRepository } from '@/data/test'
+import { LogErrorRepositorySpy } from '@/data/test'
+import faker from 'faker'
 
-const makeController = (): Controller => {
-  class ControllerStub implements Controller {
-    async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-      return await Promise.resolve(ok(mockAccountModel()))
-    }
-  }
+export class ControllerSpy implements Controller {
+	httpResponse = ok(mockAccountModel())
+  httpRequest: HttpRequest
 
-  return new ControllerStub()
+	async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+		this.httpRequest = httpRequest
+    return await Promise.resolve(this.httpResponse)
+	}
 }
 
-const mockRequest = (): HttpRequest => ({
-  body: {
-    email: 'email@email.com',
-    name: 'any_name',
-    password: 'any_password',
-    passwordConfirmation: 'any_password'
+const mockRequest = (): HttpRequest => {
+  const password = faker.internet.password()
+  return {
+    body: {
+      name: faker.name.findName(),
+      email: faker.internet.email(),
+      password,
+      passwordConfirmation: password
+    }
   }
-})
+}
+
+const mockServerError = (): HttpResponse => {
+  const fakeError = new Error()
+  fakeError.stack = 'any_stack'
+  return serverError(fakeError)
+}
 
 interface SutTypes {
   sut: LogControllerDecorator
-  controller: Controller
-  logErrorRepository: LogErrorRepository
+  controllerSpy: ControllerSpy
+  logErrorRepositorySpy: LogErrorRepositorySpy
 }
 
 const makeSut = (): SutTypes => {
-  const controller = makeController()
-  const logErrorRepository = mockErrorRepository()
+  const controller = new ControllerSpy()
+  const logErrorRepository = new LogErrorRepositorySpy()
   const sut = new LogControllerDecorator(controller, logErrorRepository)
 
   return {
     sut,
-    controller,
-    logErrorRepository
+    controllerSpy: controller,
+    logErrorRepositorySpy: logErrorRepository
   }
 }
 
-describe('LogController Decorator', () => {
+describe('LogControllerDecorator', () => {
   test('Should call controller handle', async () => {
-    const { sut, controller } = makeSut()
-    const handleSpy = jest.spyOn(controller, 'handle')
-    const fakeRequest = mockRequest()
-    await sut.handle(fakeRequest)
+    const { sut, controllerSpy } = makeSut()
+    const httpRequest = mockRequest()
 
-    expect(handleSpy).toHaveBeenCalledWith(fakeRequest)
+    await sut.handle(httpRequest)
+
+    expect(controllerSpy.httpRequest).toEqual(httpRequest)
   })
 
   test('Should return the same result of the controller', async () => {
-    const { sut } = makeSut()
+    const { sut, controllerSpy } = makeSut()
+
     const response = await sut.handle(mockRequest())
 
-    expect(response).toEqual(ok(mockAccountModel()))
+    expect(response).toEqual(controllerSpy.httpResponse)
   })
 
   test('Should call LogErrorRepository if controller return a server error', async () => {
-    const { sut, controller, logErrorRepository } = makeSut()
-    const fakeError = new Error()
-    fakeError.stack = 'any_stack'
-    const logSpy = jest.spyOn(logErrorRepository, 'logError')
-    jest
-      .spyOn(controller, 'handle')
-      .mockReturnValueOnce(Promise.resolve(serverError(fakeError)))
+    const { sut, controllerSpy, logErrorRepositorySpy } = makeSut()
+    const serverError = mockServerError()
+    controllerSpy.httpResponse = serverError
 
     await sut.handle(mockRequest())
 
-    expect(logSpy).toHaveBeenCalled()
-  })
-
-  test('Should call LogErrorRepository with correct stack error', async () => {
-    const { sut, controller, logErrorRepository } = makeSut()
-    const fakeError = new Error()
-    fakeError.stack = 'any_stack'
-    const logSpy = jest.spyOn(logErrorRepository, 'logError')
-    jest
-      .spyOn(controller, 'handle')
-      .mockReturnValueOnce(Promise.resolve(serverError(fakeError)))
-
-    await sut.handle(mockRequest())
-
-    expect(logSpy).toHaveBeenCalledWith('any_stack')
+    expect(logErrorRepositorySpy.stack).toBe(serverError.body.stack)
   })
 })
