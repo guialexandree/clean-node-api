@@ -94,11 +94,13 @@ describe('Db Authentication', () => {
     expect(accessToken).toBeNull()
   })
 
-  test('Should return an token if Encrypter on success', async () => {
-    const { sut, encrypterSpy } = makeSut()
-    const accessToken = await sut.auth(mockAuthenticationParams())
+  test('Should return an AuthenticationModel on success', async () => {
+    const { sut, encrypterSpy, loadAccountByEmailRepositorySpy } = makeSut()
+
+    const { accessToken, name } = await sut.auth(mockAuthenticationParams())
 
     expect(accessToken).toBe(encrypterSpy.ciphertext)
+    expect(loadAccountByEmailRepositorySpy.accountModel.name).toBe(name)
   })
 
   test('Should call Encrypter with correct plaintext', async () => {
