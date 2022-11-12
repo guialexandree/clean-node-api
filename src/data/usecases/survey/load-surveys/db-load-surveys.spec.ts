@@ -2,6 +2,7 @@ import { DbLoadSurveys } from './db-load-surveys-protocols'
 import { throwError } from '@/domain/test'
 import { LoadSurveysRepositorySpy } from '@/data/test'
 import MockDate from 'mockdate'
+import faker from 'faker'
 
 type SutTypes = {
 	sut: DbLoadSurveys
@@ -18,6 +19,7 @@ const makeSut = (): SutTypes => {
 	}
 }
 
+let accountId: string
 describe('DbLoadSurveys UseCase', () => {
 	beforeAll(() => {
 		MockDate.set(new Date())
@@ -27,18 +29,22 @@ describe('DbLoadSurveys UseCase', () => {
 		MockDate.reset()
 	})
 
-	test('Should call LoadSurveysRepository', async () => {
+	beforeEach(() => {
+		accountId = faker.datatype.uuid()
+	})
+
+	test('Should call LoadSurveysRepository with correct accountId', async () => {
 		const { sut, loadSurveysRepositoryStub } = makeSut()
 
-		await sut.load()
+		await sut.load(accountId)
 
-		expect(loadSurveysRepositoryStub.callsCount).toBe(1)
+		expect(loadSurveysRepositoryStub.accountId).toBe(accountId)
 	})
 
 	test('Should return a list of Surveys on success', async () => {
 		const { sut, loadSurveysRepositoryStub } = makeSut()
 
-		const surveys = await sut.load()
+		const surveys = await sut.load(accountId)
 
 		expect(surveys).toEqual(loadSurveysRepositoryStub.surveysResultModel)
 	})
@@ -49,7 +55,7 @@ describe('DbLoadSurveys UseCase', () => {
       .spyOn(loadSurveysRepositoryStub, 'loadAll')
       .mockImplementationOnce(throwError)
 
-    const promise = sut.load()
+    const promise = sut.load(accountId)
 
     void expect(promise).rejects.toThrow()
   })
