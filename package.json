@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/main/server.js",
+    "pre-commit": "lint-staged",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "postbuild": "copyfiles -u -1 public/**/* dist/static",
     "dev": "sucrase-node src/main/server.ts",
