@@ -12,6 +12,6 @@ export class CompareFieldsValidation implements Validation {
       return new InvalidParamError(this.fieldToCompareName)
     }
 
-    return null as unknown as Error
+		return null
   }
 }

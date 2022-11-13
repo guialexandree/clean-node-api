@@ -4,22 +4,18 @@
  */
 
 module.exports = {
-	roots: ['<rootDir>/src'],
+	roots: ['<rootDir>/tests'],
   collectCoverageFrom: [
 		'<rootDir>/src/**/*.ts',
-		'!<rootDir>/src/main/**',
-		'!<rootDir>/src/**/*protocols.ts',
-		'!<rootDir>/src/**/*protocols/index.ts',
-		'!<rootDir>/src/types/*.d.ts',
-		'!<rootDir>/src/**/test/*.ts'
+		'!<rootDir>/src/main/**'
 	],
   coverageDirectory: 'coverage',
 	preset: '@shelf/jest-mongodb',
-	watchPathIgnorePatterns: ['globalConfig'],
   transform: {
     '.+\\.ts$': 'ts-jest'
   },
 	moduleNameMapper: {
+		'@/tests/(.*)': '<rootDir>/tests/$1',
 		'@/(.*)': '<rootDir>/src/$1'
 	}
 }
