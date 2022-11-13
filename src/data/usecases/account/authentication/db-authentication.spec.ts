@@ -1,4 +1,3 @@
-
 import { DbAuthentication } from './db-authentication'
 import { Authentication } from './db-authentication-protocols'
 import { mockAuthenticationParams, throwError } from '@/domain/test'
