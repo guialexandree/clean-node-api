@@ -1,5 +1,5 @@
 import { SurveyModel } from '@/domain/models'
-import { AddSurveyParams } from '@/domain/usecases'
+import { AddSurvey } from '@/domain/usecases'
 import { MongoHelper, SurveyMongoRepository } from '@/infra/db/mongodb'
 import { mockAddAccountParams, mockAddSurveyParams } from '@/tests/domain/mocks'
 import { Collection, ObjectId } from 'mongodb'
@@ -15,7 +15,7 @@ const makeAccount = async (): Promise<ObjectId> => {
 	return account.insertedId
 }
 
-const makeSurvey = async (data: AddSurveyParams): Promise<SurveyModel> => {
+const makeSurvey = async (data: AddSurvey.Params): Promise<SurveyModel> => {
 	const result = await surveyCollection.insertOne(data)
 
 	const survey = await surveyCollection.findOne<SurveyModel>({ _id: result.insertedId })

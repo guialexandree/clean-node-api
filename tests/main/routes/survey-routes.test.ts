@@ -1,6 +1,6 @@
 import request from 'supertest'
 import env from '@/main/config/env'
-import { AddSurveyParams } from '@/domain/usecases'
+import { AddSurvey } from '@/domain/usecases'
 import { MongoHelper } from '@/infra/db/mongodb'
 import { Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
@@ -9,7 +9,7 @@ import MockDate from 'mockdate'
 let surveyCollection: Collection
 let accountCollection: Collection
 
-const makeSurveyDate = (): AddSurveyParams => {
+const makeSurveyDate = (): AddSurvey.Params => {
   return {
     question: 'any_question',
     answers: [
