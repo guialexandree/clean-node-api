@@ -56,7 +56,7 @@ describe('Db Authentication', () => {
 
   test('Should return null if LoadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositorySpy } = makeSut()
-		loadAccountByEmailRepositorySpy.accountModel = null
+		loadAccountByEmailRepositorySpy.result = null
 
     const account = await sut.auth(mockAuthenticationParams())
 
@@ -70,7 +70,7 @@ describe('Db Authentication', () => {
     await sut.auth(authenticationParams)
 
     expect(hashComparerSpy.plaintext).toBe(authenticationParams.password)
-    expect(hashComparerSpy.digest).toBe(loadAccountByEmailRepositorySpy.accountModel.password)
+    expect(hashComparerSpy.digest).toBe(loadAccountByEmailRepositorySpy.result.password)
   })
 
   test('Should throws if HashComparer throws', async () => {
@@ -99,7 +99,7 @@ describe('Db Authentication', () => {
     const { accessToken, name } = await sut.auth(mockAuthenticationParams())
 
     expect(accessToken).toBe(encrypterSpy.ciphertext)
-    expect(loadAccountByEmailRepositorySpy.accountModel.name).toBe(name)
+    expect(loadAccountByEmailRepositorySpy.result.name).toBe(name)
   })
 
   test('Should call Encrypter with correct plaintext', async () => {
@@ -107,7 +107,7 @@ describe('Db Authentication', () => {
 
     await sut.auth(mockAuthenticationParams())
 
-    expect(encrypterSpy.plaintext).toBe(loadAccountByEmailRepositorySpy.accountModel.id)
+    expect(encrypterSpy.plaintext).toBe(loadAccountByEmailRepositorySpy.result.id)
   })
 
 	test('Should throws if Encrypter throws', async () => {
@@ -126,7 +126,7 @@ describe('Db Authentication', () => {
 
     await sut.auth(mockAuthenticationParams())
 
-    expect(updateAccessTokenRepositorySpy.id).toBe(loadAccountByEmailRepositorySpy.accountModel.id)
+    expect(updateAccessTokenRepositorySpy.id).toBe(loadAccountByEmailRepositorySpy.result.id)
     expect(updateAccessTokenRepositorySpy.token).toBe(encrypterSpy.ciphertext)
   })
 

@@ -1,37 +1,50 @@
-import { AccountModel } from '@/domain/models/account'
 import { AddAccount } from '@/domain/usecases'
-import { AddAccountRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository } from '@/data/protocols'
-import { mockAccountModel } from '@/tests/domain/mocks'
-
+import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository } from '@/data/protocols'
+import faker from 'faker'
 export class AddAccountRepositorySpy implements AddAccountRepository {
-	accountModel = mockAccountModel()
+	result = true
   addAccountParams: AddAccount.Params
 
   async add (data: AddAccount.Params): Promise<AddAccountRepository.Result> {
     this.addAccountParams = data
-    return await Promise.resolve(true)
+    return await Promise.resolve(this.result)
   }
 }
 
 export class LoadAccountByEmailRepositorySpy implements LoadAccountByEmailRepository {
-	accountModel = mockAccountModel()
+	result = {
+		id: faker.datatype.uuid(),
+		name: faker.name.findName(),
+		password: faker.internet.password()
+	}
+
 	email: string
 
-	async loadByEmail (email: string): Promise<AccountModel> {
+	async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
 		this.email = email
-		return await Promise.resolve(this.accountModel)
+		return await Promise.resolve(this.result)
+	}
+}
+
+export class CheckAccountByEmailRepositorySpy implements CheckAccountByEmailRepository {
+	result = false
+	email: string
+
+	async checkByEmail (email: string): Promise<CheckAccountByEmailRepository.Result> {
+		this.email = email
+		return await Promise.resolve(this.result)
 	}
 }
 
 export class LoadAccountByTokenRepositorySpy implements LoadAccountByTokenRepository {
-	accountModel = mockAccountModel()
+	result = { id: faker.datatype.uuid() }
 	token: string
 	role: string
 
-	async loadByToken (token: string, role?: string): Promise<AccountModel> {
+	async loadByToken (token: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
 		this.token = token
 		this.role = role
-		return await Promise.resolve(this.accountModel)
+		return await Promise.resolve(this.result)
 	}
 }
 

@@ -52,7 +52,7 @@ describe('SignUpController', () => {
 
   test('Should return status 403 if AddAccount returns null', async () => {
     const { sut, addAccountSpy } = makeSut()
-		addAccountSpy.isValid = false
+		addAccountSpy.result = false
 
     const httpResponse = await sut.handle(mockRequest())
 
