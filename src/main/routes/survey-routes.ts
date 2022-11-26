@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { adaptRoute } from '@/main/adapters/express-route-adapter'
+import { adaptRoute } from '@/main/adapters'
 import { makeSurveyController, makeLoadSurveysController } from '@/main/factories/controllers'
 import { adminAuth } from '@/main/middlewares/admin-auth'
 import { auth } from '@/main/middlewares/auth'
