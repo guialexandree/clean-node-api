@@ -1,12 +1,12 @@
 import { Controller } from '@/presentation/protocols'
 import { LoadSurveyResultController } from '@/presentation/controllers/'
-import { makeDbLoadSurveyById, makeDbLoadSurveyResult } from '@/main/factories/usecases/'
+import { makeDbCheckSurveyById, makeDbLoadSurveyResult } from '@/main/factories/usecases/'
 import { makeControllerDecorator } from '@/main/factories/decorator'
 
 export const makeLoadSurveyResultController = (): Controller => {
-	const loadSurveyById = makeDbLoadSurveyById()
+	const checkSurveyById = makeDbCheckSurveyById()
 	const loadSurveyResult = makeDbLoadSurveyResult()
-  const controller = new LoadSurveyResultController(loadSurveyById, loadSurveyResult)
+  const controller = new LoadSurveyResultController(checkSurveyById, loadSurveyResult)
 
   return makeControllerDecorator(controller)
 }
