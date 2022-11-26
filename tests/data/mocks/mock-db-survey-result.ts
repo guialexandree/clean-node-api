@@ -1,12 +1,12 @@
 import { SurveyResultModel } from '@/domain/models'
-import { SaveSurveyResultParams } from '@/domain/usecases'
 import { LoadSurveyResultRepository, SaveSurveyResultRepository } from '@/data/protocols'
 import { mockSurveyResultModel } from '@/tests/domain/mocks'
+import { SaveSurveyResult } from '@/domain/usecases'
 
 export class SaveSurveyResultRepositorySpy implements SaveSurveyResultRepository {
-	saveSurveyParams: SaveSurveyResultParams
+	saveSurveyParams: SaveSurveyResult.Params
 
-	async save (data: SaveSurveyResultParams): Promise<void> {
+	async save (data: SaveSurveyResult.Params): Promise<void> {
 		this.saveSurveyParams = data
 		return await Promise.resolve()
 	}
