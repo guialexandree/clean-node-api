@@ -5,13 +5,13 @@ import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository, CheckAccountByEmailRepository {
   async add (data: AddAccount.Params): Promise<AddAccountRepository.Result> {
-    const accountCollection = await MongoHelper.getCollection('accounts')
+    const accountCollection = MongoHelper.getCollection('accounts')
     const newAccount = await accountCollection.insertOne(data)
     return newAccount.insertedId !== null
   }
 
   async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
-    const accountCollection = await MongoHelper.getCollection('accounts')
+    const accountCollection = MongoHelper.getCollection('accounts')
     const result = await accountCollection.findOne({
 			email
 		}, {
@@ -25,7 +25,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   }
 
 	async checkByEmail (email: string): Promise<CheckAccountByEmailRepository.Result> {
-    const accountCollection = await MongoHelper.getCollection('accounts')
+    const accountCollection = MongoHelper.getCollection('accounts')
     const result = await accountCollection.findOne({
 			email
 		}, {
@@ -37,7 +37,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   }
 
   async updateAccessToken (id: string, accessToken: string): Promise<void> {
-    const accountCollection = await MongoHelper.getCollection('accounts')
+    const accountCollection = MongoHelper.getCollection('accounts')
     const objectId = new ObjectId(id)
     await accountCollection.updateOne({
       _id: objectId
@@ -49,7 +49,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   }
 
 	async loadByToken (token: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
-		const accountCollection = await MongoHelper.getCollection('accounts')
+		const accountCollection = MongoHelper.getCollection('accounts')
     const result = await accountCollection.findOne({
 			accessToken: token,
 			$or: [{

@@ -11,7 +11,7 @@ describe('LogMongoRepository', () => {
   })
 
   beforeEach(async () => {
-    const errorCollection = await MongoHelper.getCollection('errors')
+    const errorCollection = MongoHelper.getCollection('errors')
     await errorCollection.deleteMany({})
   })
 
@@ -23,7 +23,7 @@ describe('LogMongoRepository', () => {
     const sut = makeSut()
     await sut.logError(faker.random.words())
 
-    const errorCollection = await MongoHelper.getCollection('errors')
+    const errorCollection = MongoHelper.getCollection('errors')
     const count = await errorCollection.countDocuments()
 
     expect(count).toBe(1)
