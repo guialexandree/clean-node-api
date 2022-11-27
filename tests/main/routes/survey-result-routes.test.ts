@@ -1,18 +1,20 @@
 import request from 'supertest'
 import env from '@/main/config/env'
+import { setupApp } from '@/main/config/app'
 import { SurveyModel } from '@/domain/models/survey'
 import { MongoHelper } from '@/infra/db/mongodb'
 import { Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import MockDate from 'mockdate'
+import { Express } from 'express'
 
+let app: Express
 let surveyCollection: Collection
 let accountCollection: Collection
 
 describe('Login Routes', () => {
-  const app = require('@/main/config/app').default
-
   beforeAll(async () => {
+		app = await setupApp()
     await MongoHelper.connect(global.__MONGO_URI__)
 		MockDate.set(new Date())
   })
