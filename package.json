@@ -21,6 +21,8 @@
     "test:integration": "npm test -- -c jest-integration-config.js",
     "test:staged": "npm test -- --findRelatedTests ./src",
     "test:ci": "npm test -- --coverage",
+    "pretest:coveralls": "npm run test:ci",
+    "test:coveralls": "coveralls < coverage/lcov.info",
     "prepare": "husky install"
   },
   "author": "Guilherme Alexandre Rocha Pereira",
@@ -43,6 +45,7 @@
     "@typescript-eslint/parser": "^5.44.0",
     "bson-objectid": "^2.0.4",
     "copyfiles": "^2.4.1",
+    "coveralls": "^3.1.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.28.0",
     "eslint-config-standard": "^17.0.0",
