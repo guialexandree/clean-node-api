@@ -1,5 +1,6 @@
 [![Build Status](https://app.travis-ci.com/guialexandree/clean-node-api.svg?branch=master)](https://app.travis-ci.com/guialexandree/clean-node-api)
 [![Coverage Status](https://coveralls.io/repos/github/guialexandree/clean-node-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/clean-node-api?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/clean-node-api/badge.svg)](https://snyk.io/test/github/guialexandree/clean-node-api)
 
 # **Clean Node API**
 
