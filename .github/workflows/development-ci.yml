@@ -79,24 +79,7 @@ jobs:
     - name: Integration Tests
       run: npm run test:integration
 
-  Jest-Coverage:
-    name: test
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v1
-
-    - name: Use Node.js 14.17.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14.17.x
-
-    - name: npm install, make test-coverage
-      run: |
-        npm install
-        npm run test:ci
-
-    - name: Coveralls
+    - name: Coveralls push
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
