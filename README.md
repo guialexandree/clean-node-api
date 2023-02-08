@@ -1,5 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/guialexandree/clean-node-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/clean-node-api?branch=master)
 [![](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+>>>>>>> 965342a2939c0967f39505ad895e47e5f86b2899
 [![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/clean-node-api/badge.svg)](https://snyk.io/test/github/guialexandree/clean-node-api)
 
 # **Clean Node API**
