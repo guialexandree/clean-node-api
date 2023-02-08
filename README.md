@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/guialexandree/clean-node-api/badge.svg?branch=master)](https://coveralls.io/github/guialexandree/clean-node-api?branch=master)
+[![](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)](https://github.com/guialexandree/habits-clean-api/actions/workflows/development-ci.yml/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/guialexandree/clean-node-api/badge.svg)](https://snyk.io/test/github/guialexandree/clean-node-api)
 
 # **Clean Node API**
