@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { setupApp } from '@/main/config/app'
 import { noCache } from '@/main/middlewares/no-cache'
-import { Express } from 'express'
+import { type Express } from 'express'
 
 let app: Express
 

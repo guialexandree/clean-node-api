@@ -1,8 +1,8 @@
-import { SurveyModel } from '@/domain/models'
-import { AddSurvey } from '@/domain/usecases'
+import { type SurveyModel } from '@/domain/models'
+import { type AddSurvey } from '@/domain/usecases'
 import { MongoHelper, SurveyMongoRepository } from '@/infra/db/mongodb'
 import { mockAddAccountParams, mockAddSurveyParams } from '@/tests/domain/mocks'
-import { Collection, ObjectId } from 'mongodb'
+import { type Collection, ObjectId } from 'mongodb'
 import MockDate from 'mockdate'
 import ObjectID from 'bson-objectid'
 

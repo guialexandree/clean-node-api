@@ -1,4 +1,4 @@
-import { SurveyModel } from '@/domain/models'
+import { type SurveyModel } from '@/domain/models'
 
 export interface AddSurvey {
   add: (dataSurvey: AddSurvey.Params) => Promise<void>

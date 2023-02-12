@@ -1,5 +1,5 @@
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
-import { Validation } from '@/presentation/protocols'
+import { type Validation } from '@/presentation/protocols'
 import { EmailValidation, RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { makeSignInValidation } from '@/main/factories/controllers'
 

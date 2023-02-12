@@ -1,4 +1,4 @@
-import { Controller, HttpResponse } from '@/presentation/protocols'
+import { type Controller, type HttpResponse } from '@/presentation/protocols'
 import { ok, serverError } from '@/presentation/helpers'
 import { LogControllerDecorator } from '@/main/decorators'
 import { LogErrorRepositorySpy } from '@/tests/data/mocks'

@@ -1,5 +1,5 @@
-import { LoadAnswersBySurvey, SaveSurveyResult } from '@/domain/usecases'
-import { Controller, HttpResponse } from '@/presentation/protocols'
+import { type LoadAnswersBySurvey, type SaveSurveyResult } from '@/domain/usecases'
+import { type Controller, type HttpResponse } from '@/presentation/protocols'
 import { InvalidParamError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers'
 

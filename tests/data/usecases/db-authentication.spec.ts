@@ -1,4 +1,4 @@
-import { Authentication } from '@/domain/usecases'
+import { type Authentication } from '@/domain/usecases'
 import { DbAuthentication } from '@/data/usecases'
 import { mockAuthenticationParams, throwError } from '@/tests/domain/mocks'
 import { UpdateAccessTokenRepositorySpy, EncrypterSpy, HashComparerSpy, LoadAccountByEmailRepositorySpy } from '@/tests/data/mocks'

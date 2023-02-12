@@ -1,5 +1,5 @@
-import { AddAccount } from '@/domain/usecases'
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository } from '@/data/protocols'
+import { type AddAccount } from '@/domain/usecases'
+import { type AddAccountRepository, type CheckAccountByEmailRepository, type LoadAccountByEmailRepository, type LoadAccountByTokenRepository, type UpdateAccessTokenRepository } from '@/data/protocols'
 import faker from 'faker'
 export class AddAccountRepositorySpy implements AddAccountRepository {
 	result = true
@@ -55,6 +55,6 @@ export class UpdateAccessTokenRepositorySpy implements UpdateAccessTokenReposito
 	async updateAccessToken (id: string, token: string): Promise<void> {
 		this.id = id
 		this.token = token
-		return await Promise.resolve()
+		await Promise.resolve()
 	}
 }

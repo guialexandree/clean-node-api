@@ -1,6 +1,6 @@
-import { SurveyModel, SurveyResultModel } from '@/domain/models'
-import { LoadSurveyResult } from '@/domain/usecases'
-import { LoadSurveyByIdRepository, LoadSurveyResultRepository } from '@/data/protocols'
+import { type SurveyModel, type SurveyResultModel } from '@/domain/models'
+import { type LoadSurveyResult } from '@/domain/usecases'
+import { type LoadSurveyByIdRepository, type LoadSurveyResultRepository } from '@/data/protocols'
 
 export class DbLoadSurveyResult implements LoadSurveyResult {
 	constructor (

@@ -1,5 +1,5 @@
-import { LoadSurveys } from '@/domain/usecases'
-import { LoadSurveysRepository } from '@/data/protocols'
+import { type LoadSurveys } from '@/domain/usecases'
+import { type LoadSurveysRepository } from '@/data/protocols'
 
 export class DbLoadSurveys implements LoadSurveys {
 	constructor (

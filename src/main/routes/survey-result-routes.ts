@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { type Router } from 'express'
 import { adaptRoute } from '@/main/adapters'
 import { auth } from '../middlewares/auth'
 import { makeSaveSurveyResultController, makeLoadSurveyResultController } from '@/main/factories/controllers'

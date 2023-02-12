@@ -1,4 +1,4 @@
-import { AddSurveyRepository, CheckSurveyByIdRepository, LoadAnswersBySurveyRepository, LoadSurveyByIdRepository, LoadSurveysRepository } from '@/data/protocols'
+import { type AddSurveyRepository, type CheckSurveyByIdRepository, type LoadAnswersBySurveyRepository, type LoadSurveyByIdRepository, type LoadSurveysRepository } from '@/data/protocols'
 import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb'
 import { ObjectId } from 'mongodb'
 

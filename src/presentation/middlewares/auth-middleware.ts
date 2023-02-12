@@ -1,5 +1,5 @@
-import { LoadAccountByToken } from '@/domain/usecases'
-import { HttpResponse, Middleware } from '@/presentation/protocols'
+import { type LoadAccountByToken } from '@/domain/usecases'
+import { type HttpResponse, type Middleware } from '@/presentation/protocols'
 import { AccessDeniedError } from '@/presentation/errors'
 import { forbidden, ok, serverError } from '@/presentation/helpers'
 

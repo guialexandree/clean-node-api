@@ -1,4 +1,4 @@
-import { Validation } from '@/presentation/protocols'
+import { type Validation } from '@/presentation/protocols'
 import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapter'
 import { EmailValidation, ValidationComposite, CompareFieldsValidation, RequiredFieldValidation } from '@/validation/validators'
 import { makeSignUpValidation } from '@/main/factories/controllers'

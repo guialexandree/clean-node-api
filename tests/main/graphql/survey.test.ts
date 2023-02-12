@@ -2,9 +2,9 @@ import { MongoHelper } from '@/infra/db/mongodb'
 import env from '@/main/config/env'
 import { setupApp } from '@/main/config/app'
 
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
-import { Express } from 'express'
+import { type Express } from 'express'
 import request from 'supertest'
 
 let surveyCollection: Collection

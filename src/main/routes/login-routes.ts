@@ -1,4 +1,4 @@
-import { Router } from 'express'
+import { type Router } from 'express'
 import { adaptRoute } from '@/main/adapters'
 import { makeSignInController, makeSignUpController } from '@/main/factories/controllers'
 

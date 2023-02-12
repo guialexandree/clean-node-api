@@ -1,4 +1,4 @@
-import { LoadAnswersBySurvey } from '@/domain/usecases'
+import { type LoadAnswersBySurvey } from '@/domain/usecases'
 import { DbLoadAnswersBySurvey } from '@/data/usecases'
 import { SurveyMongoRepository } from '@/infra/db/mongodb'
 

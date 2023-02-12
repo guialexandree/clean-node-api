@@ -1,5 +1,5 @@
-import { SurveyResultModel } from '@/domain/models'
-import { SaveSurveyResult } from '@/domain/usecases'
+import { type SurveyResultModel } from '@/domain/models'
+import { type SaveSurveyResult } from '@/domain/usecases'
 import faker from 'faker'
 
 export const mockSaveSurveyResultParams = (): SaveSurveyResult.Params => {

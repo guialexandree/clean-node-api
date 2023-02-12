@@ -1,4 +1,4 @@
-import express, { Express } from 'express'
+import express, { type Express } from 'express'
 import path from 'path'
 
 export default (app: Express): void => {

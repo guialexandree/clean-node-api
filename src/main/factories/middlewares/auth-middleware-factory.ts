@@ -1,4 +1,4 @@
-import { Middleware } from '@/presentation/protocols'
+import { type Middleware } from '@/presentation/protocols'
 import { AuthMiddleware } from '@/presentation/middlewares/auth-middleware'
 import { makeLoadAccountByToken } from '@/main/factories/usecases'
 

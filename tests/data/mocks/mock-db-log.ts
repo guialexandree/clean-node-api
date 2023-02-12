@@ -1,10 +1,10 @@
-import { LogErrorRepository } from '@/data/protocols'
+import { type LogErrorRepository } from '@/data/protocols'
 
 export class LogErrorRepositorySpy implements LogErrorRepository {
 	stack: string
 
 	async logError (stack: string): Promise<void> {
 		this.stack = stack
-		return await Promise.resolve()
+		await Promise.resolve()
 	}
 }

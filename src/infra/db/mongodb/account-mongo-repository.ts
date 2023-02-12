@@ -1,5 +1,5 @@
-import { AddAccount } from '@/domain/usecases'
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository } from '@/data/protocols/'
+import { type AddAccount } from '@/domain/usecases'
+import { type AddAccountRepository, type CheckAccountByEmailRepository, type LoadAccountByEmailRepository, type LoadAccountByTokenRepository, type UpdateAccessTokenRepository } from '@/data/protocols/'
 import { MongoHelper } from '@/infra/db/mongodb'
 import { ObjectId } from 'mongodb'
 

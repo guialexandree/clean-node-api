@@ -1,12 +1,12 @@
 import request from 'supertest'
 import env from '@/main/config/env'
 import { setupApp } from '@/main/config/app'
-import { AddSurvey } from '@/domain/usecases'
+import { type AddSurvey } from '@/domain/usecases'
 import { MongoHelper } from '@/infra/db/mongodb'
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import { sign } from 'jsonwebtoken'
 import MockDate from 'mockdate'
-import { Express } from 'express'
+import { type Express } from 'express'
 
 let app: Express
 let surveyCollection: Collection

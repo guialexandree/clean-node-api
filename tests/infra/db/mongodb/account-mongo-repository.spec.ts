@@ -1,7 +1,7 @@
 import { MongoHelper, AccountMongoRepository } from '@/infra/db/mongodb'
 
 import { mockAddAccountParams, throwError } from '@/tests/domain/mocks'
-import { Collection } from 'mongodb'
+import { type Collection } from 'mongodb'
 import faker from 'faker'
 
 let accountCollection: Collection

@@ -1,5 +1,5 @@
-import { AddSurvey } from '@/domain/usecases'
-import { AddSurveyRepository } from '@/data/protocols'
+import { type AddSurvey } from '@/domain/usecases'
+import { type AddSurveyRepository } from '@/data/protocols'
 
 export class DbAddSurvey implements AddSurvey {
   constructor (

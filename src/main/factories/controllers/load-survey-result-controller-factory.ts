@@ -1,4 +1,4 @@
-import { Controller } from '@/presentation/protocols'
+import { type Controller } from '@/presentation/protocols'
 import { LoadSurveyResultController } from '@/presentation/controllers/'
 import { makeDbCheckSurveyById, makeDbLoadSurveyResult } from '@/main/factories/usecases/'
 import { makeControllerDecorator } from '@/main/factories/decorator'

@@ -1,4 +1,4 @@
-import { HashComparer, Hasher, Encrypter, Decrypter } from '@/data/protocols'
+import { type HashComparer, type Hasher, type Encrypter, type Decrypter } from '@/data/protocols'
 import faker from 'faker'
 
 export class EncrypterSpy implements Encrypter {

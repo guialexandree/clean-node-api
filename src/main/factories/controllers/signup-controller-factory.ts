@@ -1,4 +1,4 @@
-import { Controller } from '@/presentation/protocols'
+import { type Controller } from '@/presentation/protocols'
 import { SignUpController } from '@/presentation/controllers/signup-controller'
 import { makeAddAccount, makeAuthentication } from '@/main/factories/usecases'
 import { makeControllerDecorator } from '@/main/factories/decorator'

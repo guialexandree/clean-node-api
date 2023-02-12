@@ -1,5 +1,5 @@
 import env from '@/main/config/env'
-import { Authentication } from '@/domain/usecases'
+import { type Authentication } from '@/domain/usecases'
 import { DbAuthentication } from '@/data/usecases'
 import { AccountMongoRepository } from '@/infra/db/mongodb'
 import { BcryptAdapter, JwtAdapter } from '@/infra/criptography'

@@ -1,4 +1,4 @@
-import { Controller } from '@/presentation/protocols'
+import { type Controller } from '@/presentation/protocols'
 import { LoadSurveysController } from '@/presentation/controllers'
 import { makeDbLoadSurveys } from '@/main/factories/usecases'
 import { makeControllerDecorator } from '@/main/factories/decorator'

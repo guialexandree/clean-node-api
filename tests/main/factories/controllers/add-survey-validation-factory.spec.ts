@@ -1,4 +1,4 @@
-import { Validation } from '@/presentation/protocols'
+import { type Validation } from '@/presentation/protocols'
 import { RequiredFieldValidation, ValidationComposite } from '@/validation/validators'
 import { makeSurveyValidation } from '@/main/factories/controllers'
 

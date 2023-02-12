@@ -1,5 +1,5 @@
-import { CheckSurveyById, LoadSurveyResult } from '@/domain/usecases'
-import { Controller, HttpResponse } from '@/presentation/protocols'
+import { type CheckSurveyById, type LoadSurveyResult } from '@/domain/usecases'
+import { type Controller, type HttpResponse } from '@/presentation/protocols'
 import { forbidden, ok, serverError } from '@/presentation/helpers'
 import { InvalidParamError } from '@/presentation/errors'
 
