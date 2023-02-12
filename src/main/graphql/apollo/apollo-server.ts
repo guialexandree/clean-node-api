@@ -31,6 +31,7 @@ schema = authDirectiveTransformer(schema)
 export const setupApolloServer = (): ApolloServer => new ApolloServer({
 	schema,
 	validationRules: [dephLimit(7)],
+	introspection: false,
 	context: ({ req }) => ({ req }),
 	plugins: [{
 		requestDidStart: async () => ({
