@@ -2,8 +2,9 @@ import typeDefs from '@/main/graphql/type-defs'
 import resolvers from '@/main/graphql/resolvers'
 import { authDirectiveTransformer } from '@/main/graphql/directives'
 import { makeExecutableSchema } from '@graphql-tools/schema'
-import { GraphQLError } from 'graphql'
+import { type GraphQLError } from 'graphql'
 import { ApolloServer } from 'apollo-server-express'
+import dephLimit from 'graphql-depth-limit'
 
 const handleErrors = (response: any, errors: readonly GraphQLError[]): void => {
 	errors?.forEach(error => {
@@ -29,10 +30,11 @@ schema = authDirectiveTransformer(schema)
 
 export const setupApolloServer = (): ApolloServer => new ApolloServer({
 	schema,
+	validationRules: [dephLimit(7)],
 	context: ({ req }) => ({ req }),
 	plugins: [{
 		requestDidStart: async () => ({
-			willSendResponse: async ({ response, errors }) => handleErrors(response, errors)
+			willSendResponse: async ({ response, errors }) => { handleErrors(response, errors) }
 		})
 	}]
 })
