@@ -73,11 +73,8 @@ jobs:
       run: |
         npm install
 
-    - name: Units Tests
-      run: npm run test:unit
-
-    - name: Integration Tests
-      run: npm run test:integration
+    - name: Coverage Tests
+      run: npm run test:ci
 
     - name: Coveralls push
       uses: coverallsapp/github-action@master
